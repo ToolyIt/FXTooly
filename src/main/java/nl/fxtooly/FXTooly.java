@@ -17,6 +17,9 @@ public class FXTooly extends Application {
 	public static void setTabs(List<ToolyTab> tabs){
 		FXTooly.tabs = tabs;
 	}
+	public static List<ToolyTab> getTabs(){
+		return FXTooly.tabs;
+	}
 	public static void main(String[] args) {
 		if (args.length == 3) {
 			Repository repository = new Repository(args[0]);

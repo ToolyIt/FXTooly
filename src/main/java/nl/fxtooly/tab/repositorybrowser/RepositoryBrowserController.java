@@ -52,20 +52,29 @@ public class RepositoryBrowserController implements ToolyTabController{
 				ToolyUtils.buildTable(documents, documentsQueryResult);
 			}
 		});
-		documents.setOnMousePressed(event -> {
-			QueryResultRow selectedItem = documents.getSelectionModel().getSelectedItem();
-			for (String v: selectedItem.getValues()) {
-				if (DfId.isObjectId(v)){
-					ToolyUtils.buildTable(documentinfo, rbm.getObjectInfo(v));
-				}
+		folders.setOnMousePressed(e -> {
+			if (e.isSecondaryButtonDown()) {
+				TreeView<QueryResultRow> tv = (TreeView<QueryResultRow>)e.getSource();
+				TreeItem<QueryResultRow> selectedItem = tv.getSelectionModel().getSelectedItem();
+				System.out.println(selectedItem.getValue().getValues().get(0));
 			}
-			if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-	        	for (String v: selectedItem.getValues()) {
-	        		if (DfId.isObjectId(v)){
-	        			ToolyUtils.openFile(v);
-	        		}
-	        	}
-	        }
+		});
+		documents.setOnMousePressed(e -> {
+			QueryResultRow selectedItem = documents.getSelectionModel().getSelectedItem();
+			if (selectedItem != null) {
+				for (String v: selectedItem.getValues()) {
+					if (DfId.isObjectId(v)){
+						ToolyUtils.buildTable(documentinfo, rbm.getObjectInfo(v));
+					}
+				}
+				if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
+		        	for (String v: selectedItem.getValues()) {
+		        		if (DfId.isObjectId(v)){
+		        			ToolyUtils.openFile(v);
+		        		}
+		        	}
+		        }
+			}
 		});
 	}
 	private void addSubFolders(TreeItem<QueryResultRow> rootItem, String folderId){

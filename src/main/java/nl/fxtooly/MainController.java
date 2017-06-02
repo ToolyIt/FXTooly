@@ -9,10 +9,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 
 public class MainController {
 	@FXML TabPane tabs;
+	@FXML Menu tabMenu;
 	@FXML
 	public void initialize(){
 		try {
@@ -24,6 +27,7 @@ public class MainController {
 				searchTabs(root, root, tabs);
 			}
 			this.tabs.getTabs().addAll(tabs);
+			this.tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
 			FXTooly.setTabs(tabs);
 		} catch (Exception e){
 			e.printStackTrace();
@@ -43,7 +47,20 @@ public class MainController {
 				    		Class<?> cls = cl.loadClass(clazz.replace("\\", "."));
 				    		ToolyTab toolyTab = (ToolyTab) cls.newInstance();
 				    		toolyTab.setText(toolyTab.getToolyTabName());
+				    		toolyTab.setClosable(true);
 				    		tabs.add(toolyTab);
+				    		MenuItem menuItem = new MenuItem("Add " + toolyTab.getToolyTabName() + " tab");
+				    		menuItem.setOnAction(e -> {
+								try {
+									ToolyTab newToolyTab = (ToolyTab) cls.newInstance();
+									newToolyTab.setText(toolyTab.getToolyTabName());
+					    			FXTooly.getTabs().add(newToolyTab);
+					    			this.tabs.getTabs().add(newToolyTab);
+								} catch (InstantiationException | IllegalAccessException e1) {
+									ToolyExceptionHandler.handle(e1);
+								}
+				    		});
+				    		tabMenu.getItems().add(menuItem);
 			    		}
 			    	}
 			    }

@@ -45,6 +45,7 @@ public class ToolyUtils {
 	}
 	public static void buildTable(TableView<QueryResultRow> table, QueryResult queryResult){
 		table.getColumns().clear();
+		table.getItems().clear();
 		for (int i = 0; i < queryResult.getColumnNames().size(); i++) {
 			String cn = queryResult.getColumnNames().get(i);
 			if ("format".equals(cn)) {
