@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="nl.fxtooly.tab.queryexecutor.QueryExecutorController">
+  <content>
+    <BorderPane fx:id="content" prefHeight="353.0" prefWidth="630.0">
+      <bottom>
+        <TextField fx:id="status" editable="false" prefWidth="200.0" />
+      </bottom>
+      <center>
+        <TableView fx:id="results" prefHeight="200.0" prefWidth="200.0">
+          <columns>
+          </columns>
+        </TableView>
+      </center>
+      <top>
+        <SplitPane dividerPositions="0.5" focusTraversable="true" prefHeight="160.0" prefWidth="200.0">
+          <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+              <children>
+                <TextArea fx:id="query" prefHeight="158.0" prefWidth="552.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+              </children>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+              <children>
+              <Button fx:id="execute" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#execute" text="Execute" />
+              </children>
+            </AnchorPane>
+          </items>
+        </SplitPane>
+      </top>
+    </BorderPane>
+  </content>
+</fx:root>
