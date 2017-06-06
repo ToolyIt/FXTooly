@@ -10,7 +10,7 @@
     <SplitPane dividerPositions="0.19068736141906872, 0.458980044345898" focusTraversable="true" orientation="VERTICAL" prefHeight="453.0" prefWidth="800.0">
       <items>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-          <TreeView fx:id="prevQueries" maxHeight="-1.0" minHeight="-1.0" prefHeight="143.0" prefWidth="628.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+          <TabPane fx:id="queryCache" prefHeight="83.0" prefWidth="798.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
           <SplitPane dividerPositions="0.6972361809045227" focusTraversable="true" maxHeight="150.0" minHeight="-1.0" minWidth="-1.0" prefHeight="59.0" prefWidth="628.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

@@ -5,16 +5,17 @@ import com.documentum.fc.common.DfException;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import nl.fxtooly.FXTooly;
 import nl.fxtooly.ToolyExceptionHandler;
@@ -39,7 +40,7 @@ public class QueryExecutorController implements ToolyTabController{
 	@FXML
 	TextArea query;
 	@FXML
-	TreeView<Query> prevQueries;
+	TabPane queryCache;
 	@FXML
 	Button saveQuery;
 	@FXML
@@ -48,47 +49,44 @@ public class QueryExecutorController implements ToolyTabController{
 	ObservableList<Query> localQueries = FXCollections.observableArrayList();
 	ObservableList<Query> remoteQueries = FXCollections.observableArrayList();
 
+	public void addQueryCacheTab(String name, Queries queries, ObservableList<Query> obsQueries){
+		TableView<Query> queriesView = new TableView<>();
+		Tab tab = new Tab(name, queriesView);
+
+		TableColumn<Query, String> col = new TableColumn<>("Name");
+		col.setCellValueFactory(new PropertyValueFactory<>("name"));
+		queriesView.getColumns().add(col);
+		TableColumn<Query, String> col2 = new TableColumn<>("Execute count");
+		col2.setCellValueFactory(new PropertyValueFactory<>("useCount"));
+		queriesView.getColumns().add(col2);
+		TableColumn<Query, String> col3 = new TableColumn<>("Query");
+		col3.setCellValueFactory(new PropertyValueFactory<>("content"));
+		queriesView.getColumns().add(col3);
+
+		obsQueries.addAll(queries.getList());
+		queriesView.setItems(obsQueries);
+		queriesView.getSelectionModel().selectedItemProperty().addListener((obs, os, ns) -> {
+		    if (ns != null) {
+		    	query.setText(ns.getContent());
+		    	queryName.setText(ns.getName());
+		    }
+		});
+		queryCache.getTabs().add(tab);
+	}
 	@FXML
 	public void initialize() {
 		execute.setDisable(!ConnectorManager.get().isConnected());
 
-		if (prevQueries.getRoot() == null) {
-			TreeItem<Query> rootNode = new TreeItem<>(new Query("Queries", null));
-			prevQueries.setRoot(rootNode);
-
+		if (queryCache.getTabs().isEmpty()) {
+			addQueryCacheTab("Local cached queries", ToolyUtils.getObject(LOCAL_QUERY_HISTORY, Queries.class), this.localQueries);
 			if (ConnectorManager.get().isConnected()) {
-				initQueryHistory("Shared Queries", remoteQueries, DctmUtils.getObject(
+				Queries remoteQueries = DctmUtils.getObject(
 						ConnectorManager.get().getConnectedRepository().getSession(),
 						REMOTE_QUERY_HISTORY,
-						Queries.class));
+						Queries.class);
+				addQueryCacheTab("Remote cached queries", remoteQueries, this.remoteQueries);
 			}
-
-			initQueryHistory("Local Queries", localQueries, ToolyUtils.getObject(LOCAL_QUERY_HISTORY, Queries.class));
-
-			prevQueries.getSelectionModel().selectedItemProperty().addListener((o, item1, item2) ->{
-				if (item2.getValue().getContent() != null) {
-					query.setText(item2.getValue().getContent());
-					queryName.setText(item2.getValue().getName());
-				}
-			});
-			rootNode.setExpanded(true);
 		}
-	}
-	public void initQueryHistory(String node, ObservableList<Query> queries, Queries qs) {
-		TreeItem<Query> treeItem = new TreeItem<>(new Query(node, null));
-		treeItem.setExpanded(true);
-
-		queries.addListener((ListChangeListener.Change<? extends Query> q) -> {
-			ObservableList<? extends Query> list = q.getList();
-			treeItem.getChildren().clear();
-			for (Query query: list) {
-				TreeItem<Query> queryItem = new TreeItem<>(query);
-				treeItem.getChildren().add(queryItem);
-			}
-		});
-
-		prevQueries.getRoot().getChildren().add(treeItem);
-		queries.addAll(qs.getList());
 	}
 	public void execute() {
 		results.getItems().clear();
