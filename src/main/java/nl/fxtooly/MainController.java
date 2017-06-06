@@ -12,8 +12,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 
 public class MainController {
+	@FXML TextField status;
 	@FXML TabPane tabs;
 	@FXML Menu tabMenu;
 	@FXML
@@ -29,6 +31,7 @@ public class MainController {
 			this.tabs.getTabs().addAll(tabs);
 			this.tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
 			FXTooly.setTabs(tabs);
+			FXTooly.setStatusField(status);
 		} catch (Exception e){
 			e.printStackTrace();
 		}

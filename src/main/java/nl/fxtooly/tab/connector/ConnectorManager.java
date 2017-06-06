@@ -12,6 +12,7 @@ import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfLoginInfo;
 import com.documentum.fc.common.IDfLoginInfo;
 
+import nl.fxtooly.FXTooly;
 import nl.fxtooly.ToolyExceptionHandler;
 import nl.fxtooly.model.Repository;
 
@@ -49,11 +50,19 @@ public class ConnectorManager {
 				repository.getSession().getSessionManager().release(repository.getSession());
 				repository.setSession(null);
 			}
+			if (repository.getBackgroundSession() != null) {
+				repository.getBackgroundSession().getSessionManager().release(repository.getBackgroundSession());
+				repository.setBackgroundSession(null);
+			}
 		}
+		FXTooly.reInit();
 	}
 	public void disconnect(Repository repository) {
-		repository.getSession().getSessionManager().release(repository.getSession());
-		repository.setSession(null);
+		if (repository.getSession() != null) {
+			repository.getSession().getSessionManager().release(repository.getSession());
+			repository.setSession(null);
+		}
+		FXTooly.reInit();
 	}
 	public void connect(Repository repository) {
 		try {
@@ -64,8 +73,19 @@ public class ConnectorManager {
 			loginInfo.setUser(repository.getUsername());
 			loginInfo.setPassword(repository.getPassword());
 			sm.setIdentity(repository.getName(), loginInfo);
-			repository.setSession(sm.getSession(repository.getName()));
+			if (repository.getSession() == null) {
+				FXTooly.setStatus("Connected to " + repository.getName() + " as " + repository.getUsername());
+				repository.setSession(sm.getSession(repository.getName()));
+			} else {
+				repository.setBackgroundSession(sm.getSession(repository.getName()));
+			}
 			if (!list.contains(repository)) list.add(repository);
+
+			if (repository.getBackgroundSession() != null) {
+				return;
+			} else {
+				connect(repository);
+			}
 		} catch (DfException e) {
 			ToolyExceptionHandler.handle("error.connect.repository", e);
 		}

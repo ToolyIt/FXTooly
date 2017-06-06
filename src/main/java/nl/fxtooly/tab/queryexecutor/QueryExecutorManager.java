@@ -5,15 +5,17 @@ import com.documentum.fc.client.IDfCollection;
 import com.documentum.fc.client.IDfQuery;
 import com.documentum.fc.common.DfException;
 
-import nl.fxtooly.ToolyExceptionHandler;
 import nl.fxtooly.ToolyUtils;
+import nl.fxtooly.documentum.DctmUtils;
+import nl.fxtooly.model.Queries;
+import nl.fxtooly.model.Query;
 import nl.fxtooly.model.QueryResult;
 import nl.fxtooly.model.QueryResultRow;
 import nl.fxtooly.tab.connector.ConnectorManager;
 
 public class QueryExecutorManager {
 
-	public QueryResult getQueryResult(String query) {
+	public QueryResult getQueryResult(String query) throws DfException {
 		QueryResult qr = new QueryResult();
 		IDfQuery q = new DfQuery();
 		IDfCollection col = null;
@@ -32,11 +34,27 @@ public class QueryExecutorManager {
 				}
 				fr = false;
 			}
-		} catch (DfException e) {
-			ToolyExceptionHandler.handle(e);
 		} finally {
-			ToolyUtils.closeCollection(col);
+			DctmUtils.closeCollection(col);
 		}
 		return qr;
+	}
+	public Queries getQueries(String type){
+		return ToolyUtils.getObject(type, Queries.class);
+	}
+	public boolean addQuery(String type, Query query){
+		Queries object = ToolyUtils.getObject(type, Queries.class);
+		boolean add = true;
+		for (Query q: object.getList()) {
+			if (q.getContent().equals(query.getContent())) {
+				q.setUseCount(q.getUseCount() + 1);
+				add = false;
+			}
+		}
+		if (add) {
+			object.getList().add(query);
+		}
+		ToolyUtils.saveObject(type, object);
+		return add;
 	}
 }

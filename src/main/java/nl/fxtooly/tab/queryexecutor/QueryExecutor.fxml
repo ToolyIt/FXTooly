@@ -9,16 +9,10 @@
   <content>
     <BorderPane fx:id="content" prefHeight="353.0" prefWidth="630.0">
       <bottom>
-        <TextField fx:id="status" editable="false" prefWidth="200.0" />
+        <TableView fx:id="results" prefHeight="250.0" prefWidth="-1.0" />
       </bottom>
       <center>
-        <TableView fx:id="results" prefHeight="200.0" prefWidth="200.0">
-          <columns>
-          </columns>
-        </TableView>
-      </center>
-      <top>
-        <SplitPane dividerPositions="0.5" focusTraversable="true" prefHeight="160.0" prefWidth="200.0">
+        <SplitPane dividerPositions="0.5" focusTraversable="true" maxHeight="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
           <items>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
               <children>
@@ -27,12 +21,17 @@
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
               <children>
-              <Button fx:id="execute" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#execute" text="Execute" />
+                <Button fx:id="execute" layoutX="10.0" layoutY="135.0" mnemonicParsing="false" onAction="#execute" text="Execute" />
+                <TextField layoutX="10.0" layoutY="33.0" prefWidth="175.0" />
+                <Button layoutX="111.0" layoutY="60.0" mnemonicParsing="false" text="Save Query" />
               </children>
             </AnchorPane>
           </items>
         </SplitPane>
-      </top>
+      </center>
+      <left>
+        <TreeView fx:id="prevQueries" maxHeight="-1.0" minHeight="-1.0" prefHeight="150.0" />
+      </left>
     </BorderPane>
   </content>
 </fx:root>

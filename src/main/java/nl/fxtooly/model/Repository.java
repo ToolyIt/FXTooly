@@ -7,6 +7,7 @@ public class Repository {
 	private String username;
 	private String password;
 	private IDfSession session;
+	private IDfSession backgroundSession;
 
 	public Repository(){
 
@@ -42,5 +43,11 @@ public class Repository {
 	}
 	public void setSession(IDfSession session) {
 		this.session = session;
+	}
+	public IDfSession getBackgroundSession() {
+		return backgroundSession;
+	}
+	public void setBackgroundSession(IDfSession backgroundSession) {
+		this.backgroundSession = backgroundSession;
 	}
 }

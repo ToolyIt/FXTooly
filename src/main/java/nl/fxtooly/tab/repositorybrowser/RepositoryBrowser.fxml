@@ -7,12 +7,9 @@
 
 <fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="nl.fxtooly.tab.repositorybrowser.RepositoryBrowserController">
   <content>
-    <BorderPane fx:id="content" prefHeight="353.0" prefWidth="630.0">
-      <bottom>
-        <TextField editable="false" prefWidth="200.0" />
-      </bottom>
+    <BorderPane prefHeight="353.0" prefWidth="630.0">
       <center>
-        <SplitPane dividerPositions="0.205607476635514" focusTraversable="true" prefHeight="160.0" prefWidth="200.0">
+        <SplitPane dividerPositions="0.39937106918238996" focusTraversable="true" prefHeight="160.0" prefWidth="200.0">
           <items>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
               <children>
@@ -28,7 +25,7 @@
         </SplitPane>
       </center>
       <right>
-        <TableView fx:id="documentinfo" prefHeight="200.0" prefWidth="310.0"/>
+        <TableView fx:id="documentinfo" prefHeight="200.0" prefWidth="310.0" />
       </right>
     </BorderPane>
   </content>

@@ -2,21 +2,22 @@ package nl.fxtooly;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.documentum.fc.client.DfQuery;
-import com.documentum.fc.client.IDfCollection;
-import com.documentum.fc.client.IDfQuery;
-import com.documentum.fc.client.IDfSession;
+import org.apache.commons.io.IOUtils;
+
 import com.documentum.fc.client.IDfSysObject;
-import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,22 +28,16 @@ import nl.fxtooly.model.QueryResultRow;
 import nl.fxtooly.tab.connector.ConnectorManager;
 
 public class ToolyUtils {
+	public static final String IMAGE_FOLDER = "folder";
+	public static final String IMAGE_FOLDER_OPENED = "opened_folder";
+	public static final String IMAGE_HOME = "home";
+	public static final String IMAGE_TRASH = "empty_trash";
+	public static final String IMAGE_CLIPBOARD = "clipboard";
+	public static final String IMAGE_LOCK = "lock";
+
 	private ToolyUtils(){}
 	private static Map<String, Image> formats = new LinkedHashMap<>();
-	public static void closeCollection(IDfCollection col){
-		if (col != null)
-			try {
-				col.close();
-			} catch (DfException e) {
-				ToolyExceptionHandler.handle(e);
-			}
-	}
-	public static IDfCollection executeQuery(final IDfSession session, final String queryString, final int type)
-			throws DfException {
-		IDfQuery query = new DfQuery();
-		query.setDQL(queryString);
-		return query.execute(session, type);
-	}
+
 	public static void buildTable(TableView<QueryResultRow> table, QueryResult queryResult){
 		table.getColumns().clear();
 		table.getItems().clear();
@@ -51,6 +46,10 @@ public class ToolyUtils {
 			if ("format".equals(cn)) {
 				TableColumn<QueryResultRow, ImageView> col = new TableColumn<>();
 				col.setCellValueFactory(new PropertyValueFactory<>("format"));
+				table.getColumns().add(col);
+			} else if ("r_lock_owner".equals(cn)) {
+				TableColumn<QueryResultRow, Label> col = new TableColumn<>();
+				col.setCellValueFactory(new PropertyValueFactory<>("lockOwner"));
 				table.getColumns().add(col);
 			} else {
 				TableColumn<QueryResultRow, String> col = new TableColumn<>(cn);
@@ -91,6 +90,52 @@ public class ToolyUtils {
 		} catch (Exception e) {
 			ToolyExceptionHandler.handle(e);
 		}
-
+	}
+	public static ImageView getImage(String image){
+		return getImage(image, 16.0, 16.0);
+	}
+	public static ImageView getImage(String imageType, double fitWidth, double fitHeight){
+		Image image = new Image(ToolyUtils.class.getResourceAsStream("/" + imageType + ".png"));
+		ImageView imageView = new ImageView(image);
+		imageView.setFitHeight(fitHeight);
+		imageView.setFitWidth(fitWidth);
+		return imageView;
+	}
+	public static File getSaveLocation(){
+		String userHome = System.getProperty("user.home");
+		if (userHome != null) {
+			File f = new File(userHome + "/.fxtooly");
+			if (!f.exists()) {
+				f.mkdirs();
+			}
+			return f;
+		}
+		return null;
+	}
+	public static void saveObject(String fileName, Object object) {
+		ObjectMapper om = new ObjectMapper();
+		try (FileOutputStream fos = new FileOutputStream(new File(getSaveLocation(), fileName))){
+			String content = om.writeValueAsString(object);
+			IOUtils.write(content, fos);
+		} catch (IOException e) {
+			ToolyExceptionHandler.handle(e);
+		}
+	}
+	public static <T> T getObject(String fileName, Class<T> responseType) {
+		File file = new File(getSaveLocation(), fileName);
+		if (!file.exists())
+			try {
+				return responseType.newInstance();
+			} catch (InstantiationException | IllegalAccessException e1) {
+				ToolyExceptionHandler.handle(e1);
+			}
+		try (FileInputStream fos = new FileInputStream(file)){
+			byte[] byteArray = IOUtils.toByteArray(fos);
+			ObjectMapper om = new ObjectMapper();
+			return om.readValue(byteArray, responseType);
+		} catch (Exception e) {
+			ToolyExceptionHandler.handle(e);
+			return null;
+		}
 	}
 }

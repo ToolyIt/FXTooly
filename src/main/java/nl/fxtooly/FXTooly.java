@@ -3,14 +3,17 @@ package nl.fxtooly;
 import java.util.List;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.fxtooly.model.Repository;
 import nl.fxtooly.tab.connector.ConnectorManager;
 
 public class FXTooly extends Application {
+	private static TextField status = null;
 	private static Parent root = null;
 	private static List<ToolyTab> tabs = null;
 
@@ -43,6 +46,16 @@ public class FXTooly extends Application {
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+	}
+	public static void setStatusField(TextField status){
+		FXTooly.status = status;
+	}
+	public static void setStatus(String text){
+		if (FXTooly.status != null) {
+			Platform.runLater(() -> {
+				FXTooly.status.setText(text);
+			});
+		}
 	}
 	public static void reInit(){
 		for (ToolyTab tab: FXTooly.tabs) {

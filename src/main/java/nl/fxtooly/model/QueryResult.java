@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class QueryResult {
+	public final static String ATT_OBJECTID = "r_object_id";
+
 	private List<String> columnNames = new LinkedList<>();
 	private List<QueryResultRow> rows = new LinkedList<>();
 
