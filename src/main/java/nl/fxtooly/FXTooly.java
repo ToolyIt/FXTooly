@@ -1,6 +1,9 @@
 package nl.fxtooly;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
+import java.util.UUID;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -13,6 +16,7 @@ import nl.fxtooly.model.Repository;
 import nl.fxtooly.tab.connector.ConnectorManager;
 
 public class FXTooly extends Application {
+	private static String userId = UUID.randomUUID().toString();
 	private static TextField status = null;
 	private static Parent root = null;
 	private static List<ToolyTab> tabs = null;
@@ -36,6 +40,14 @@ public class FXTooly extends Application {
 			  ConnectorManager.get().disconnect();
 		    }
 		});
+		try {
+			InetAddress addr = InetAddress.getLocalHost();
+			userId = addr.getHostName();
+		} catch (UnknownHostException ex) {
+			ex.printStackTrace();
+			userId = UUID.randomUUID().toString();
+		}
+
 		FXTooly.launch();
 	}
 
@@ -63,5 +75,8 @@ public class FXTooly extends Application {
 				tab.getController().initialize();
 			}
 		}
+	}
+	public static String getUserId(){
+		return userId;
 	}
 }

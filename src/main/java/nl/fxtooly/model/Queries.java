@@ -13,8 +13,10 @@ public class Queries {
 	}
 
 	public void setList(List<Query> list) {
-		Collections.sort(list, new UseComparator());
 		this.list = list;
+	}
+	public void order(){
+		Collections.sort(list, new UseComparator());
 	}
 	public class UseComparator implements Comparator<Query> {
 		@Override

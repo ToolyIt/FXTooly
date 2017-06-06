@@ -1,14 +1,13 @@
 package nl.fxtooly.model;
 
-import java.util.Comparator;
-
 public class Query {
 	private String name;
 	private String content;
 	private int useCount = 1;
 
 	public Query(){}
-	public Query(String content){
+	public Query(String name, String content){
+		this.name = name;
 		this.content = content;
 	}
 	public String getName() {
@@ -28,5 +27,12 @@ public class Query {
 	}
 	public void setUseCount(int useCount) {
 		this.useCount = useCount;
+	}
+	@Override
+	public String toString() {
+		String nameLbl = name != null ? name.toUpperCase() : "";
+		String useCountLbl = content != null ? " (" + useCount + ")" : "";
+		String contentLbl = content != null ? " " + content : "";
+		return nameLbl + useCountLbl + contentLbl;
 	}
 }

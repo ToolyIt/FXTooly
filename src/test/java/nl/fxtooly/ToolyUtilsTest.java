@@ -15,7 +15,7 @@ public class ToolyUtilsTest {
 		Queries qs = new Queries();
 		List<Query> queries = new LinkedList<Query>();
 		qs.setList(queries);
-		queries.add(new Query("testquery"));
+		queries.add(new Query("testquery", "select * from dm_cabinet"));
 		ToolyUtils.saveObject("test", qs);
 		Queries object = ToolyUtils.getObject("test", Queries.class);
 		Assert.assertTrue("Object not saved and retrieved.", object.getList().size() > 0);

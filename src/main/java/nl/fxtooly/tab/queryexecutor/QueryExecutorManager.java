@@ -48,6 +48,7 @@ public class QueryExecutorManager {
 		for (Query q: object.getList()) {
 			if (q.getContent().equals(query.getContent())) {
 				q.setUseCount(q.getUseCount() + 1);
+				query.setUseCount(q.getUseCount() + 1);
 				add = false;
 			}
 		}
