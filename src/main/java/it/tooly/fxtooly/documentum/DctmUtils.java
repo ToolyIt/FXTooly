@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils;
 import com.documentum.fc.client.DfObjectNotFoundException;
 import com.documentum.fc.client.DfQuery;
 import com.documentum.fc.client.IDfCollection;
+import com.documentum.fc.client.IDfPersistentObject;
 import com.documentum.fc.client.IDfQuery;
 import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.client.IDfSysObject;
@@ -21,7 +22,13 @@ import it.tooly.dctmclient.model.IRepository;
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;
+import javafx.scene.control.Alert;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 
 
 public class DctmUtils {
@@ -132,5 +139,33 @@ public class DctmUtils {
 		if (doc == null)
 			throw new Exception("Object with id " + objectId + " not found in repository.");
 		return doc;
+	}
+	public static void showDump(IDfPersistentObject object){
+		try {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Dump of object " + object.getObjectId().getId());
+			alert.setResizable(true);
+
+			Label label = new Label("Object dump:");
+
+			TextArea textArea = new TextArea(object.dump());
+			textArea.setEditable(false);
+			textArea.setWrapText(true);
+
+			textArea.setMaxWidth(Double.MAX_VALUE);
+			textArea.setMaxHeight(Double.MAX_VALUE);
+			GridPane.setVgrow(textArea, Priority.ALWAYS);
+			GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+			GridPane expContent = new GridPane();
+			expContent.setMaxWidth(Double.MAX_VALUE);
+			expContent.add(label, 0, 0);
+			expContent.add(textArea, 0, 1);
+
+			alert.getDialogPane().setContent(expContent);
+			alert.show();
+		} catch (Exception e) {
+			ToolyExceptionHandler.handle(e);
+		}
 	}
 }

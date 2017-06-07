@@ -7,13 +7,13 @@ import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.ToolyTabController;
 import it.tooly.fxtooly.ToolyUtils;
 import it.tooly.fxtooly.documentum.ObjectContextMenu;
+import it.tooly.fxtooly.documentum.fx.ObjectTable;
 import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.shape.SVGPath;
@@ -24,10 +24,10 @@ public class RepositoryBrowserController implements ToolyTabController{
 	private TreeView<QueryResultRow> folders;
 
 	@FXML
-	private TableView<QueryResultRow> documents;
+	private ObjectTable documents;
 
 	@FXML
-	private TableView<QueryResultRow> documentinfo;
+	private ObjectTable documentinfo;
 
 	@FXML
 	public void initialize() {
@@ -56,21 +56,10 @@ public class RepositoryBrowserController implements ToolyTabController{
 						documentsQueryResult = rbm.getItems(newValue.getValue().getValues().get(1), false);
 						documents.getItems().clear();
 						documents.getColumns().clear();
-						ToolyUtils.buildTable(documents, documentsQueryResult);
+						documents.setQueryResult(documentsQueryResult);
 					} catch (DfException e) {
 						ToolyExceptionHandler.handle(e);
 					}
-				}
-			}
-		});
-		folders.setOnMousePressed(e -> {
-			if (e.isSecondaryButtonDown()) {
-				try {
-					TreeView<QueryResultRow> tv = (TreeView<QueryResultRow>)e.getSource();
-					TreeItem<QueryResultRow> selectedItem = tv.getSelectionModel().getSelectedItem();
-					tv.setContextMenu(new ObjectContextMenu(selectedItem.getValue()));
-				} catch (DfException ex) {
-					ToolyExceptionHandler.handle(ex);
 				}
 			}
 		});
@@ -79,7 +68,7 @@ public class RepositoryBrowserController implements ToolyTabController{
 			if (selectedItem != null) {
 				for (String v: selectedItem.getValues()) {
 					if (DfId.isObjectId(v)){
-						ToolyUtils.buildTable(documentinfo, rbm.getObjectInfo(v));
+						documentinfo.setQueryResult(rbm.getObjectInfo(v));
 					}
 				}
 				if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
@@ -104,6 +93,15 @@ public class RepositoryBrowserController implements ToolyTabController{
 					item = new TreeItem<>(r, ToolyUtils.getImage(ToolyUtils.IMAGE_FOLDER));
 				}
 				rootItem.getChildren().add(item);
+				folders.setOnMousePressed(e -> {
+					if (e.isSecondaryButtonDown()) {
+						try {
+							folders.setContextMenu(new ObjectContextMenu(items, r));
+						} catch (DfException ex) {
+							ToolyExceptionHandler.handle(ex);
+						}
+					}
+				});
 			}
 		} catch (DfException e) {
 			ToolyExceptionHandler.handle(e);

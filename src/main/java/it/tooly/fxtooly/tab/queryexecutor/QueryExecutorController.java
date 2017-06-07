@@ -8,6 +8,7 @@ import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.ToolyTabController;
 import it.tooly.fxtooly.ToolyUtils;
 import it.tooly.fxtooly.documentum.DctmUtils;
+import it.tooly.fxtooly.documentum.fx.ObjectTable;
 import it.tooly.fxtooly.model.Queries;
 import it.tooly.fxtooly.model.Query;
 import it.tooly.fxtooly.model.QueryResult;
@@ -35,7 +36,7 @@ public class QueryExecutorController implements ToolyTabController{
 	@FXML
 	BorderPane content;
 	@FXML
-	TableView<QueryResultRow> results;
+	ObjectTable results;
 	@FXML
 	Button execute;
 	@FXML
@@ -54,6 +55,22 @@ public class QueryExecutorController implements ToolyTabController{
 
 	public void selectType(){
 		query.setText("select * from " + types.getSelectionModel().getSelectedItem().getValues().get(0));
+	}
+	public void switchUpdateSelect(){
+		if (query.getText().contains("select")) {
+			if (query.getText().contains("where")) {
+				query.setText(query.getText().replaceAll("select(.*)from(.*)where", "update $2 objects where"));
+			} else {
+				query.setText(query.getText().replaceAll("select(.*)from(.*)", "update $2 objects"));
+			}
+		} else {
+			if (query.getText().contains("where")) {
+				query.setText(query.getText().replaceAll("update(.*)objects(.*)where", "select * from $1 where"));
+			} else {
+				query.setText(query.getText().replaceAll("update(.*)objects", "select * from $1"));
+			}
+		}
+		query.setText(query.getText().replaceAll("\\s+", " "));
 	}
 	public void addQueryCacheTab(String name, Queries queries, ObservableList<Query> obsQueries){
 		TableView<Query> queriesView = new TableView<>();
@@ -111,7 +128,7 @@ public class QueryExecutorController implements ToolyTabController{
 			try {
 				queryResult = queryExecutorManager.getQueryResult(query.getText());
 				FXTooly.setStatus(queryResult.getRows().size() + " results");
-				ToolyUtils.buildTable(results, queryResult);
+				results.setQueryResult(queryResult);
 				Query query2 = new Query(null, query.getText());
 				if (queryExecutorManager.addQuery(LOCAL_QUERY_HISTORY, query2)) {
 					localQueries.add(query2);
