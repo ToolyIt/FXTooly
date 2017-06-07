@@ -6,7 +6,7 @@ import com.documentum.fc.common.DfId;
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.ToolyTabController;
 import it.tooly.fxtooly.ToolyUtils;
-import it.tooly.fxtooly.documentum.ObjectContextMenu;
+import it.tooly.fxtooly.documentum.fx.ObjectContextMenu;
 import it.tooly.fxtooly.documentum.fx.ObjectTable;
 import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;

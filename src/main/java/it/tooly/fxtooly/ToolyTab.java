@@ -10,6 +10,7 @@ public abstract class ToolyTab extends Tab{
 
 	public ToolyTab(){
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(this.getClass().getSimpleName() + ".fxml"));
+		fxmlLoader.setClassLoader(getClass().getClassLoader());
 		fxmlLoader.setRoot(this);
 		try {
 			fxmlLoader.load();
