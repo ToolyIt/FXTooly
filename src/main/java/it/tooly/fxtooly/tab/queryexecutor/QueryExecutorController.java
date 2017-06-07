@@ -99,21 +99,19 @@ public class QueryExecutorController implements ToolyTabController{
 	@FXML
 	public void initialize() {
 		execute.setDisable(!ConnectorManager.isConnected());
-
-		if (queryCache.getTabs().isEmpty()) {
-			addQueryCacheTab("Local cached queries", ToolyUtils.getObject(LOCAL_QUERY_HISTORY, Queries.class), this.localQueries);
-			if (ConnectorManager.isConnected()) {
-				Queries remoteQueries = DctmUtils.getObject(
-						ConnectorManager.getSession(),
-						REMOTE_QUERY_HISTORY,
-						Queries.class);
-				addQueryCacheTab("Remote cached queries", remoteQueries, this.remoteQueries);
-				QueryResult qr = DctmUtils.executeQuery(ConnectorManager.getSession(),
-						"select name from dm_type order by name");
-				ObservableList<QueryResultRow> items = FXCollections.observableArrayList();
-				types.setItems(items);
-				items.addAll(qr.getRows());
-			}
+		queryCache.getTabs().clear();
+		addQueryCacheTab("Local cached queries", ToolyUtils.getObject(LOCAL_QUERY_HISTORY, Queries.class), this.localQueries);
+		if (ConnectorManager.isConnected()) {
+			Queries remoteQueries = DctmUtils.getObject(
+					ConnectorManager.getSession(),
+					REMOTE_QUERY_HISTORY,
+					Queries.class);
+			addQueryCacheTab("Remote cached queries", remoteQueries, this.remoteQueries);
+			QueryResult qr = DctmUtils.executeQuery(ConnectorManager.getSession(),
+					"select name from dm_type order by name");
+			ObservableList<QueryResultRow> items = FXCollections.observableArrayList();
+			types.setItems(items);
+			items.addAll(qr.getRows());
 		}
 	}
 	public void execute() {
