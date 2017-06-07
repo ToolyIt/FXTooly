@@ -3,6 +3,7 @@ package it.tooly.fxtooly.tab.connector;
 import it.tooly.fxtooly.FXTooly;
 import it.tooly.fxtooly.ToolyTabController;
 import it.tooly.fxtooly.model.Repository;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -26,7 +27,9 @@ public class ConnectorController implements ToolyTabController{
 	@FXML
     public void initialize() {
 		repositories.getItems().clear();
-		repositories.getItems().addAll(ConnectorManager.get().getRepositories());
+		Platform.runLater(() ->{
+			repositories.getItems().addAll(ConnectorManager.get().getRepositories());
+		});
 		username.setText("");
 		password.setText("");
 		connect.setDisable(true);

@@ -10,6 +10,7 @@ import it.tooly.fxtooly.model.ToolySettings;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,12 +30,6 @@ public class FXTooly extends Application {
 		return FXTooly.tabs;
 	}
 	public static void main(String[] args) {
-		if (args.length == 3) {
-			Repository repository = new Repository(args[0]);
-			repository.setUsername(args[1]);
-			repository.setPassword(args[2]);
-			ConnectorManager.get().connect(repository);
-		}
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 		  @Override
 		    public void run() {
@@ -49,7 +44,7 @@ public class FXTooly extends Application {
 			userId = UUID.randomUUID().toString();
 		}
 
-		FXTooly.launch();
+		FXTooly.launch(args);
 	}
 
 	@Override
@@ -59,6 +54,18 @@ public class FXTooly extends Application {
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setMaximized((Boolean) ToolySettings.getLocalSetting(ToolySettings.S_FULLSCREEN).getValue());
+		Parameters parameters = getParameters();
+		List<String> raw = parameters.getRaw();
+		if (raw.size() == 3) {
+			Platform.runLater(() ->{
+				Repository repository = new Repository(raw.get(0));
+				repository.setUsername(raw.get(1));
+				repository.setPassword(raw.get(2));
+				ConnectorManager.get().connect(repository);
+				FXTooly.setStatus("Connected to " + repository.getName() + " as " + repository.getUsername());
+				FXTooly.reInit();
+			});
+		}
 		primaryStage.show();
 	}
 	public static void setStatusField(TextField status){

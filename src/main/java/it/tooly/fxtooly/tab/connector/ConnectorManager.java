@@ -74,7 +74,6 @@ public class ConnectorManager {
 			loginInfo.setPassword(repository.getPassword());
 			sm.setIdentity(repository.getName(), loginInfo);
 			if (repository.getSession() == null) {
-				FXTooly.setStatus("Connected to " + repository.getName() + " as " + repository.getUsername());
 				repository.setSession(sm.getSession(repository.getName()));
 			} else {
 				repository.setBackgroundSession(sm.getSession(repository.getName()));
