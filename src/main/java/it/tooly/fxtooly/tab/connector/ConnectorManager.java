@@ -35,6 +35,7 @@ public class ConnectorManager {
 	public static void disconnect() {
 		DctmClient.getInstance().releaseAllSessions(true);
 		connectedRepos.clear();
+		selectedRepo = null;
 		FXTooly.reInit();
 	}
 
