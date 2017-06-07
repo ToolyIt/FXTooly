@@ -24,7 +24,6 @@ import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import javafx.scene.control.Alert;
-import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -174,8 +173,7 @@ public class DctmUtils {
 	public static IDfPersistentObject getObject(QueryResult result, QueryResultRow row) throws DfException{
 		int ci = result.getColumnNames().indexOf(QueryResult.ATT_OBJECTID);
 		if (ci > -1) {
-			return ConnectorManager.get().getConnectedRepository()
-					.getSession().getObject(new DfId(row.getValues().get(ci)));
+			return ConnectorManager.getSession().getObject(new DfId(row.getValues().get(ci)));
 		} else return null;
 	}
 }
