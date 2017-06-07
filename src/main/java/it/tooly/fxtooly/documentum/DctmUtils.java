@@ -14,17 +14,20 @@ import com.documentum.fc.client.IDfQuery;
 import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.client.IDfSysObject;
 import com.documentum.fc.common.DfException;
+import com.documentum.fc.common.DfId;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;
+import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
 
 public class DctmUtils {
@@ -125,6 +128,7 @@ public class DctmUtils {
 	public static void showDump(IDfPersistentObject object){
 		try {
 			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alert.setTitle("Dump of object " + object.getObjectId().getId());
 			alert.setResizable(true);
 
@@ -149,5 +153,12 @@ public class DctmUtils {
 		} catch (Exception e) {
 			ToolyExceptionHandler.handle(e);
 		}
+	}
+	public static IDfPersistentObject getObject(QueryResult result, QueryResultRow row) throws DfException{
+		int ci = result.getColumnNames().indexOf(QueryResult.ATT_OBJECTID);
+		if (ci > -1) {
+			return ConnectorManager.get().getConnectedRepository()
+					.getSession().getObject(new DfId(row.getValues().get(ci)));
+		} else return null;
 	}
 }

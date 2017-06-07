@@ -24,6 +24,7 @@ public class ToolyUtils {
 	public static final String IMAGE_FOLDER_OPENED = "opened_folder";
 	public static final String IMAGE_HOME = "home";
 	public static final String IMAGE_TRASH = "empty_trash";
+	public static final String IMAGE_DETAILS = "fine_print";
 	public static final String IMAGE_CLIPBOARD = "clipboard";
 	public static final String IMAGE_LOCK = "lock";
 

@@ -1,9 +1,15 @@
 package it.tooly.fxtooly.documentum.fx;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+
+import com.documentum.fc.client.IDfDocument;
+import com.documentum.fc.client.IDfPersistentObject;
 import com.documentum.fc.common.DfException;
 
 import it.tooly.fxtooly.ToolyExceptionHandler;
-import it.tooly.fxtooly.documentum.ObjectContextMenu;
+import it.tooly.fxtooly.documentum.DctmUtils;
 import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;
 import javafx.collections.FXCollections;
@@ -37,14 +43,29 @@ public class ObjectTable extends TableView<QueryResultRow>{
 		ObservableList<QueryResultRow> data = FXCollections.observableArrayList(queryResult.getRows());
 		setItems(data);
 		setOnMousePressed(e -> {
+			QueryResultRow selectedItem = getSelectionModel().getSelectedItem();
 			if (e.isSecondaryButtonDown()) {
 				try {
-					QueryResultRow selectedItem = getSelectionModel().getSelectedItem();
 					setContextMenu(new ObjectContextMenu(queryResult, selectedItem));
 				} catch (DfException ex) {
 					ToolyExceptionHandler.handle(ex);
 				}
 			}
+			if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
+				try {
+					IDfPersistentObject object = DctmUtils.getObject(queryResult, selectedItem);
+					if (object != null) {
+						if (object instanceof IDfDocument) {
+							Desktop.getDesktop().open(new File(((IDfDocument)object).getFile(null)));
+						} else {
+							DctmUtils.showDump(object);
+						}
+					}
+				} catch (DfException | IOException ex) {
+					ToolyExceptionHandler.handle(ex);
+				}
+			}
+
 		});
 	}
 }

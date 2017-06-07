@@ -1,15 +1,16 @@
-package it.tooly.fxtooly.documentum;
+package it.tooly.fxtooly.documentum.fx;
 
 import java.util.Optional;
 
 import com.documentum.fc.client.IDfPersistentObject;
 import com.documentum.fc.client.IDfSysObject;
 import com.documentum.fc.common.DfException;
-import com.documentum.fc.common.DfId;
 
 import it.tooly.fxtooly.ToolyContextMenu;
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.ToolyUtils;
+import it.tooly.fxtooly.documentum.DctmUtils;
+import it.tooly.fxtooly.documentum.ObjectDestroyer;
 import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
@@ -21,17 +22,16 @@ import javafx.scene.control.MenuItem;
 public class ObjectContextMenu extends ToolyContextMenu {
 	public ObjectContextMenu(QueryResult result, QueryResultRow row) throws DfException{
 		super(row);
-		int ci = result.getColumnNames().indexOf("r_object_id");
-		if (ci > -1) {
-			IDfPersistentObject object = ConnectorManager.get().getConnectedRepository()
-					.getSession().getObject(new DfId(row.getValues().get(ci)));
-			addDestroyItem(object);
+		IDfPersistentObject object = DctmUtils.getObject(result, row);
+		if (object != null) {
 			addDumpItem(object);
+			addDestroyItem(object);
 		}
 	}
+
 	public void addDumpItem(IDfPersistentObject object){
 		MenuItem cut = new MenuItem("Dump ..");
-		cut.setGraphic(ToolyUtils.getImage(ToolyUtils.IMAGE_TRASH));
+		cut.setGraphic(ToolyUtils.getImage(ToolyUtils.IMAGE_DETAILS));
 		getItems().addAll(cut);
 		cut.setOnAction(ev ->{
 			DctmUtils.showDump(object);
