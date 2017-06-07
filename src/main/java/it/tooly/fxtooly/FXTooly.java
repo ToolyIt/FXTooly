@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import it.tooly.fxtooly.model.Repository;
+import it.tooly.fxtooly.model.ToolySettings;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -57,6 +58,7 @@ public class FXTooly extends Application {
 		root = FXMLLoader.load(getClass().getResource("Main.fxml"));
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
+		primaryStage.setMaximized((Boolean) ToolySettings.getLocalSetting(ToolySettings.S_FULLSCREEN).getValue());
 		primaryStage.show();
 	}
 	public static void setStatusField(TextField status){
