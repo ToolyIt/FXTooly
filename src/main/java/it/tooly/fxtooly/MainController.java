@@ -25,7 +25,7 @@ public class MainController {
 			List<ToolyTab> tabs = new LinkedList<>();
 			while (resources.hasMoreElements()) {
 				URL el = resources.nextElement();
-				File root = new File(el.getPath());
+				File root = new File(el.toURI());
 				searchTabs(root, root, tabs);
 			}
 			this.tabs.getTabs().addAll(tabs);

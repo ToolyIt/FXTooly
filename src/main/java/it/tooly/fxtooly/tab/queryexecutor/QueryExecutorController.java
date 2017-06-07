@@ -8,6 +8,7 @@ import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.ToolyTabController;
 import it.tooly.fxtooly.ToolyUtils;
 import it.tooly.fxtooly.documentum.DctmUtils;
+import it.tooly.fxtooly.documentum.fx.ObjectTable;
 import it.tooly.fxtooly.model.Queries;
 import it.tooly.fxtooly.model.Query;
 import it.tooly.fxtooly.model.QueryResult;
@@ -35,7 +36,7 @@ public class QueryExecutorController implements ToolyTabController{
 	@FXML
 	BorderPane content;
 	@FXML
-	TableView<QueryResultRow> results;
+	ObjectTable results;
 	@FXML
 	Button execute;
 	@FXML
@@ -126,7 +127,7 @@ public class QueryExecutorController implements ToolyTabController{
 			try {
 				queryResult = queryExecutorManager.getQueryResult(query.getText());
 				FXTooly.setStatus(queryResult.getRows().size() + " results");
-				ToolyUtils.buildTable(results, queryResult);
+				results.setQueryResult(queryResult);
 				Query query2 = new Query(null, query.getText());
 				if (queryExecutorManager.addQuery(LOCAL_QUERY_HISTORY, query2)) {
 					localQueries.add(query2);

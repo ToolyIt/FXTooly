@@ -12,20 +12,10 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 
 import com.documentum.fc.client.IDfSysObject;
-import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.tooly.fxtooly.documentum.ObjectContextMenu;
-import it.tooly.fxtooly.model.QueryResult;
-import it.tooly.fxtooly.model.QueryResultRow;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -40,38 +30,6 @@ public class ToolyUtils {
 	private ToolyUtils(){}
 	private static Map<String, Image> formats = new LinkedHashMap<>();
 
-	public static void buildTable(TableView<QueryResultRow> table, QueryResult queryResult){
-		table.getColumns().clear();
-		table.getItems().clear();
-		for (int i = 0; i < queryResult.getColumnNames().size(); i++) {
-			String cn = queryResult.getColumnNames().get(i);
-			if ("format".equals(cn)) {
-				TableColumn<QueryResultRow, ImageView> col = new TableColumn<>();
-				col.setCellValueFactory(new PropertyValueFactory<>("format"));
-				table.getColumns().add(col);
-			} else if ("r_lock_owner".equals(cn)) {
-				TableColumn<QueryResultRow, Label> col = new TableColumn<>();
-				col.setCellValueFactory(new PropertyValueFactory<>("lockOwner"));
-				table.getColumns().add(col);
-			} else {
-				TableColumn<QueryResultRow, String> col = new TableColumn<>(cn);
-				col.setCellValueFactory(new PropertyValueFactory<>("nextValue"));
-				table.getColumns().add(col);
-			}
-		}
-		ObservableList<QueryResultRow> data = FXCollections.observableArrayList(queryResult.getRows());
-		table.setItems(data);
-		table.setOnMousePressed(e -> {
-			if (e.isSecondaryButtonDown()) {
-				try {
-					QueryResultRow selectedItem = table.getSelectionModel().getSelectedItem();
-					table.setContextMenu(new ObjectContextMenu(queryResult, selectedItem));
-				} catch (DfException ex) {
-					ToolyExceptionHandler.handle(ex);
-				}
-			}
-		});
-	}
 	public static ImageView getTypeIcon(String format){
 		String unknown = "_blank";
 		if (formats.isEmpty()){

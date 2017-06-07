@@ -4,6 +4,7 @@
 <?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import it.tooly.fxtooly.documentum.fx.ObjectTable?>
 
 <fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="it.tooly.fxtooly.tab.repositorybrowser.RepositoryBrowserController">
   <content>
@@ -18,14 +19,14 @@
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
               <children>
-                <TableView fx:id="documents" prefHeight="331.0" prefWidth="437.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <ObjectTable fx:id="documents" prefHeight="331.0" prefWidth="437.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
               </children>
             </AnchorPane>
           </items>
         </SplitPane>
       </center>
       <right>
-        <TableView fx:id="documentinfo" prefHeight="200.0" prefWidth="310.0" />
+        <ObjectTable fx:id="documentinfo" prefHeight="200.0" prefWidth="310.0" />
       </right>
     </BorderPane>
   </content>

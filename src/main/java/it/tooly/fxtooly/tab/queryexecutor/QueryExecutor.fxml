@@ -5,6 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import it.tooly.fxtooly.documentum.fx.ObjectTable?>
 
 <fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="it.tooly.fxtooly.tab.queryexecutor.QueryExecutorController">
   <content>
@@ -21,24 +22,28 @@
                   <TextArea fx:id="query" prefHeight="158.0" prefWidth="552.0" style="-fx-font: 15 System;" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                 </children>
               </AnchorPane>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+              <AnchorPane maxWidth="280.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="280.0">
                 <children>
-                  <Button fx:id="execute" layoutX="4.0" layoutY="89.0" mnemonicParsing="false" onAction="#execute" prefHeight="20.0" prefWidth="234.0" text="Execute" textFill="#0029ff">
-                    <font>
-                      <Font name="System Bold" size="11.0" />
-                    </font>
-                  </Button>
                   <TextField fx:id="queryName" layoutX="4.0" layoutY="4.0" prefWidth="142.0" />
                   <Button fx:id="saveQuery" layoutX="150.0" layoutY="5.0" mnemonicParsing="false" onAction="#saveQuery" prefWidth="88.0" text="Save Query" />
                   <ComboBox fx:id="types" layoutX="4.0" layoutY="32.0" onAction="#selectType" prefWidth="142.0" />
                   <Button layoutX="4.0" layoutY="57.0" mnemonicParsing="false" onAction="#switchUpdateSelect" prefWidth="142.0" text="Swith update/select" />
+                  <BorderPane prefHeight="113.0" prefWidth="238.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <bottom>
+                      <Button fx:id="execute" mnemonicParsing="false" onAction="#execute" prefHeight="20.0" prefWidth="234.0" text="Execute" textFill="#0029ff">
+                        <font>
+                          <Font name="System Bold" size="11.0" />
+                        </font>
+                      </Button>
+                    </bottom>
+                  </BorderPane>
                 </children>
               </AnchorPane>
             </items>
           </SplitPane>
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-          <TableView fx:id="results" prefHeight="137.0" prefWidth="628.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+          <ObjectTable fx:id="results" prefHeight="137.0" prefWidth="628.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
         </AnchorPane>
       </items>
     </SplitPane>

@@ -2,3 +2,6 @@
 /.settings/
 /.classpath
 /.project
+/documentum/
+/log4j.log
+/trace.log
