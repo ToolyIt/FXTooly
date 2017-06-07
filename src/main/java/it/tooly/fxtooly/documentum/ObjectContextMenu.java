@@ -10,7 +10,6 @@ import it.tooly.fxtooly.ToolyContextMenu;
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.ToolyUtils;
 import it.tooly.fxtooly.model.QueryResultRow;
-import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -21,9 +20,13 @@ public class ObjectContextMenu extends ToolyContextMenu {
 		super(row);
 		for (String v: row.getValues()) {
 			if (DfId.isObjectId(v)) {
-				IDfSysObject object =
-						(IDfSysObject) ConnectorManager.get().getConnectedRepository().getSession().getObject(new DfId(v));
-				addDestroyItem(object);
+				IDfSysObject object;
+				try {
+					object = DctmUtils.getObject(v);
+					addDestroyItem(object);
+				} catch (Exception e) {
+					ToolyExceptionHandler.handle(e);
+				}
 			}
 		}
 	}
@@ -43,9 +46,10 @@ public class ObjectContextMenu extends ToolyContextMenu {
 
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == ButtonType.OK){
-					ObjectDestroyer objectDestroyer = new ObjectDestroyer(
-							ConnectorManager.get().getConnectedRepository().getBackgroundSession(),
-							new String[]{object.getObjectId().getId()});
+					// ObjectDestroyer objectDestroyer = new ObjectDestroyer(
+					// ConnectorManager.get().getConnectedRepository().getBackgroundSession(),
+					// new String[]{object.getObjectId().getId()});
+					ObjectDestroyer objectDestroyer = new ObjectDestroyer(object);
 					Thread thread = new Thread(objectDestroyer);
 					thread.start();
 				}

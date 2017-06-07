@@ -2,6 +2,10 @@ package it.tooly.fxtooly.model;
 
 import com.documentum.fc.client.IDfSession;
 
+/**
+ * Use {@link it.tooly.dctmclient.model.Repository}
+ */
+@Deprecated
 public class Repository {
 	private String name;
 	private String username;

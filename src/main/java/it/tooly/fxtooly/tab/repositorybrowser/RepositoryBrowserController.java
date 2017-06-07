@@ -33,8 +33,8 @@ public class RepositoryBrowserController implements ToolyTabController{
 	public void initialize() {
 		SVGPath svg = new SVGPath();
 		svg.setContent("");
-		if (ConnectorManager.get().getConnectedRepository() != null) {
-			String name = ConnectorManager.get().getConnectedRepository().getName();
+		if (ConnectorManager.getSelectedRepository() != null) {
+			String name = ConnectorManager.getSelectedRepository().getName();
 			QueryResultRow qr = new QueryResultRow();
 			qr.getValues().add(name);
 			TreeItem<QueryResultRow> rootItem = new TreeItem<>(qr, ToolyUtils.getImage(ToolyUtils.IMAGE_HOME));

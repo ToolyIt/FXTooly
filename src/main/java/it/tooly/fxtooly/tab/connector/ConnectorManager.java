@@ -1,109 +1,107 @@
 package it.tooly.fxtooly.tab.connector;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import com.documentum.com.DfClientX;
-import com.documentum.com.IDfClientX;
-import com.documentum.fc.client.IDfClient;
-import com.documentum.fc.client.IDfDocbaseMap;
-import com.documentum.fc.client.IDfSessionManager;
+import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.common.DfException;
-import com.documentum.fc.common.DfLoginInfo;
-import com.documentum.fc.common.IDfLoginInfo;
 
+import it.tooly.dctmclient.DctmClient;
+import it.tooly.dctmclient.model.IRepository;
+import it.tooly.dctmclient.model.IUserAccount;
+import it.tooly.dctmclient.model.Repository;
+import it.tooly.dctmclient.model.util.ModelMap;
 import it.tooly.fxtooly.FXTooly;
 import it.tooly.fxtooly.ToolyExceptionHandler;
-import it.tooly.fxtooly.model.Repository;
 
 public class ConnectorManager {
-	private static ConnectorManager cm = null;
-	private List<Repository> list = new LinkedList<>();
+	private static Set<IRepository> connectedRepos = new HashSet<>();
+	private static IRepository selectedRepo = null;
 
-	public static ConnectorManager get(){
-		if (ConnectorManager.cm == null) {
-			ConnectorManager.cm = new ConnectorManager();
-		}
-		return ConnectorManager.cm;
-	}
-	private ConnectorManager(){
-
-	}
-	public List<Repository> getRepositories() {
-		if (!list.isEmpty()) return list;
+	public static List<IRepository> getRepositories() {
+		ModelMap<Repository> repoMap = null;
 		try {
-			IDfClientX clientX = new DfClientX();
-			IDfClient localClient = clientX.getLocalClient();
-			IDfDocbaseMap docbaseMap = localClient.getDocbaseMap();
-			int docbaseCount = docbaseMap.getDocbaseCount();
-			for (int i = 0; i < docbaseCount; i++) {
-				list.add(new Repository(docbaseMap.getDocbaseName(i)));
-			}
+			repoMap = DctmClient.getInstance().loadRepositoryMap();
+			return new ArrayList<>(repoMap.values());
 		} catch (DfException e) {
 			ToolyExceptionHandler.handle("error.getting.repositories", e);
 		}
-		return list;
+		return Collections.emptyList();
 	}
-	public void disconnect() {
-		for (Repository repository: list) {
-			if (repository.getSession() != null) {
-				repository.getSession().getSessionManager().release(repository.getSession());
-				repository.setSession(null);
-			}
-			if (repository.getBackgroundSession() != null) {
-				repository.getBackgroundSession().getSessionManager().release(repository.getBackgroundSession());
-				repository.setBackgroundSession(null);
-			}
-		}
-		FXTooly.reInit();
-	}
-	public void disconnect(Repository repository) {
-		if (repository.getSession() != null) {
-			repository.getSession().getSessionManager().release(repository.getSession());
-			repository.setSession(null);
-		}
-		FXTooly.reInit();
-	}
-	public void connect(Repository repository) {
-		try {
-			IDfClientX clientX = new DfClientX();
-			IDfClient localClient = clientX.getLocalClient();
-			IDfSessionManager sm = localClient.newSessionManager();
-			IDfLoginInfo loginInfo = new DfLoginInfo();
-			loginInfo.setUser(repository.getUsername());
-			loginInfo.setPassword(repository.getPassword());
-			sm.setIdentity(repository.getName(), loginInfo);
-			if (repository.getSession() == null) {
-				FXTooly.setStatus("Connected to " + repository.getName() + " as " + repository.getUsername());
-				repository.setSession(sm.getSession(repository.getName()));
-			} else {
-				repository.setBackgroundSession(sm.getSession(repository.getName()));
-			}
-			if (!list.contains(repository)) list.add(repository);
 
-			if (repository.getBackgroundSession() != null) {
-				return;
+	public static void disconnect() {
+		DctmClient.getInstance().releaseAllSessions(true);
+		connectedRepos.clear();
+		FXTooly.reInit();
+	}
+
+	public static void disconnect(IRepository repository) {
+		DctmClient.getInstance().releaseSessions(repository, true);
+		connectedRepos.remove(repository);
+		if (selectedRepo.equals(repository)) {
+			if (connectedRepos.isEmpty()) {
+				selectedRepo = null;
 			} else {
-				connect(repository);
+				selectedRepo = connectedRepos.iterator().next();
 			}
+		}
+		FXTooly.reInit();
+	}
+
+	public static void connect(IRepository repository, IUserAccount userAccount) {
+		try {
+			DctmClient.getInstance().getSession(repository, userAccount);
+			connectedRepos.add(repository);
+			selectedRepo = repository;
 		} catch (DfException e) {
 			ToolyExceptionHandler.handle("error.connect.repository", e);
 		}
 	}
-	public Repository getConnectedRepository(){
-		for (Repository r: list) {
-			if (r.getSession() != null) {
-				return r;
-			}
-		}
-		return null;
+
+	public static Set<IRepository> getConnectedRepositories() {
+		return connectedRepos;
 	}
-	public boolean isConnected(){
-		for (Repository r: list) {
-			if (r.getSession() != null) {
-				return true;
-			}
+
+	/**
+	 * @return A Documentum session for the selected repository.
+	 * @see #getSelectedRepository()
+	 */
+	public static IDfSession getSession() {
+		return getSession(selectedRepo);
+	}
+
+	public static IDfSession getSession(IRepository repository) {
+		try {
+			return DctmClient.getInstance().getSession(repository, null);
+		} catch (DfException e) {
+			ToolyExceptionHandler.handle("error.connect.repository", e);
+			return null;
 		}
-		return false;
+	}
+
+	public static boolean isConnected() {
+		return !connectedRepos.isEmpty();
+	}
+
+	public static boolean isConnected(IRepository repository) {
+		return connectedRepos.contains(repository);
+	}
+
+	/**
+	 * @return the selected repository
+	 */
+	public static IRepository getSelectedRepository() {
+		return selectedRepo;
+	}
+
+	/**
+	 * @param selectedRepo
+	 *            the selected repository to set
+	 */
+	public static void setSelectedRepository(IRepository selectedRepo) {
+		ConnectorManager.selectedRepo = selectedRepo;
 	}
 }

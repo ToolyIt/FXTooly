@@ -5,7 +5,12 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.UUID;
 
-import it.tooly.fxtooly.model.Repository;
+import it.tooly.dctmclient.DctmClient;
+import it.tooly.dctmclient.model.IRepository;
+import it.tooly.dctmclient.model.IUserAccount;
+import it.tooly.dctmclient.model.Repository;
+import it.tooly.dctmclient.model.UserAccount;
+import it.tooly.dctmclient.model.util.ModelMap;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -29,15 +34,15 @@ public class FXTooly extends Application {
 	}
 	public static void main(String[] args) {
 		if (args.length == 3) {
-			Repository repository = new Repository(args[0]);
-			repository.setUsername(args[1]);
-			repository.setPassword(args[2]);
-			ConnectorManager.get().connect(repository);
+			IUserAccount userAccount = new UserAccount(args[1], args[2]);
+			ModelMap<Repository> repoMap = DctmClient.getInstance().getRepositoryMap();
+			IRepository repository = repoMap.get(args[0]);
+			ConnectorManager.connect(repository, userAccount);
 		}
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 		  @Override
 		    public void run() {
-			  ConnectorManager.get().disconnect();
+				ConnectorManager.disconnect();
 		    }
 		});
 		try {

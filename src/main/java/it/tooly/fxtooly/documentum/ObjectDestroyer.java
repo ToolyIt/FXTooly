@@ -6,6 +6,7 @@ import java.util.List;
 import com.documentum.com.DfClientX;
 import com.documentum.fc.client.DfQuery;
 import com.documentum.fc.client.IDfCollection;
+import com.documentum.fc.client.IDfPersistentObject;
 import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
@@ -20,6 +21,7 @@ import com.documentum.operations.IDfOperationMonitor;
 import com.documentum.operations.IDfOperationNode;
 import com.documentum.operations.IDfOperationStep;
 
+import it.tooly.dctmclient.util.DctmUtils;
 import it.tooly.fxtooly.FXTooly;
 
 /**
@@ -41,6 +43,15 @@ public class ObjectDestroyer implements Runnable {
 		this.aclName = session.getUser(null).getACLName();
 	}
 
+	public ObjectDestroyer(IDfPersistentObject object) throws DfException {
+		IDfSession objectSession = object.getObjectSession();
+		this.session = object.getSessionManager().newSession(objectSession.getDocbaseName());
+		this.objectIds = new String[] { object.getObjectId().getId() };
+		this.objectsCount = objectIds != null ? objectIds.length : 0;
+		this.aclDomain = session.getUser(null).getACLDomain();
+		this.aclName = session.getUser(null).getACLName();
+	}
+
 	public void run() {
 		long currentTimeMillis = System.currentTimeMillis();
 		int successCount = 0;
@@ -55,6 +66,7 @@ public class ObjectDestroyer implements Runnable {
 				"Successfully deleted " + successCount + " out of " + objectsCount + " selected objects in "
 						+ Math.round((System.currentTimeMillis() - currentTimeMillis) / 1000) + " seconds.");
 
+		DctmUtils.releaseSession(this.session);
 	}
 
 	private void removeRestrictions(String objectId) throws DfException{

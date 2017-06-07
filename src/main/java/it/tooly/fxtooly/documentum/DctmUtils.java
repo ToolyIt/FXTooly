@@ -7,17 +7,21 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
+import com.documentum.fc.client.DfObjectNotFoundException;
 import com.documentum.fc.client.DfQuery;
 import com.documentum.fc.client.IDfCollection;
 import com.documentum.fc.client.IDfQuery;
 import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.client.IDfSysObject;
 import com.documentum.fc.common.DfException;
+import com.documentum.fc.common.DfId;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import it.tooly.dctmclient.model.IRepository;
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;
+import it.tooly.fxtooly.tab.connector.ConnectorManager;
 
 
 public class DctmUtils {
@@ -114,5 +118,19 @@ public class DctmUtils {
 		} finally {
 			IOUtils.closeQuietly(content);
 		}
+	}
+
+	public static IDfSysObject getObject(String objectId) throws Exception {
+		IDfSysObject doc = null;
+		for (IRepository repo : ConnectorManager.getConnectedRepositories()) {
+			try {
+				doc = (IDfSysObject) ConnectorManager.getSession(repo).getObject(new DfId(objectId));
+			} catch (DfObjectNotFoundException nfe) {
+				// Ignore
+			}
+		}
+		if (doc == null)
+			throw new Exception("Object with id " + objectId + " not found in repository.");
+		return doc;
 	}
 }

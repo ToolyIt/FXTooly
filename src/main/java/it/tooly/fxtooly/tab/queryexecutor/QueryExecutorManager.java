@@ -21,7 +21,7 @@ public class QueryExecutorManager {
 		IDfCollection col = null;
 		q.setDQL(query);
 		try {
-			col = q.execute(ConnectorManager.get().getConnectedRepository().getSession(), IDfQuery.DF_EXECREAD_QUERY);
+			col = q.execute(ConnectorManager.getSession(), IDfQuery.DF_EXECREAD_QUERY);
 			boolean fr = true;
 			while (col.next()) {
 				QueryResultRow row = new QueryResultRow();
