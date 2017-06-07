@@ -55,6 +55,22 @@ public class QueryExecutorController implements ToolyTabController{
 	public void selectType(){
 		query.setText("select * from " + types.getSelectionModel().getSelectedItem().getValues().get(0));
 	}
+	public void switchUpdateSelect(){
+		if (query.getText().contains("select")) {
+			if (query.getText().contains("where")) {
+				query.setText(query.getText().replaceAll("select(.*)from(.*)where", "update $2 objects where"));
+			} else {
+				query.setText(query.getText().replaceAll("select(.*)from(.*)", "update $2 objects"));
+			}
+		} else {
+			if (query.getText().contains("where")) {
+				query.setText(query.getText().replaceAll("update(.*)objects(.*)where", "select * from $1 where"));
+			} else {
+				query.setText(query.getText().replaceAll("update(.*)objects", "select * from $1"));
+			}
+		}
+		query.setText(query.getText().replaceAll("\\s+", " "));
+	}
 	public void addQueryCacheTab(String name, Queries queries, ObservableList<Query> obsQueries){
 		TableView<Query> queriesView = new TableView<>();
 		Tab tab = new Tab(name, queriesView);

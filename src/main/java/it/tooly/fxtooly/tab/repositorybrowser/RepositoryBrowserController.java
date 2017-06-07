@@ -63,17 +63,6 @@ public class RepositoryBrowserController implements ToolyTabController{
 				}
 			}
 		});
-		folders.setOnMousePressed(e -> {
-			if (e.isSecondaryButtonDown()) {
-				try {
-					TreeView<QueryResultRow> tv = (TreeView<QueryResultRow>)e.getSource();
-					TreeItem<QueryResultRow> selectedItem = tv.getSelectionModel().getSelectedItem();
-					tv.setContextMenu(new ObjectContextMenu(selectedItem.getValue()));
-				} catch (DfException ex) {
-					ToolyExceptionHandler.handle(ex);
-				}
-			}
-		});
 		documents.setOnMousePressed(e -> {
 			QueryResultRow selectedItem = documents.getSelectionModel().getSelectedItem();
 			if (selectedItem != null) {
@@ -104,6 +93,15 @@ public class RepositoryBrowserController implements ToolyTabController{
 					item = new TreeItem<>(r, ToolyUtils.getImage(ToolyUtils.IMAGE_FOLDER));
 				}
 				rootItem.getChildren().add(item);
+				folders.setOnMousePressed(e -> {
+					if (e.isSecondaryButtonDown()) {
+						try {
+							folders.setContextMenu(new ObjectContextMenu(items, r));
+						} catch (DfException ex) {
+							ToolyExceptionHandler.handle(ex);
+						}
+					}
+				});
 			}
 		} catch (DfException e) {
 			ToolyExceptionHandler.handle(e);

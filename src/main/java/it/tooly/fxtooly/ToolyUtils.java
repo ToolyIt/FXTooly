@@ -12,9 +12,11 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 
 import com.documentum.fc.client.IDfSysObject;
+import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import it.tooly.fxtooly.documentum.ObjectContextMenu;
 import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
@@ -59,6 +61,16 @@ public class ToolyUtils {
 		}
 		ObservableList<QueryResultRow> data = FXCollections.observableArrayList(queryResult.getRows());
 		table.setItems(data);
+		table.setOnMousePressed(e -> {
+			if (e.isSecondaryButtonDown()) {
+				try {
+					QueryResultRow selectedItem = table.getSelectionModel().getSelectedItem();
+					table.setContextMenu(new ObjectContextMenu(queryResult, selectedItem));
+				} catch (DfException ex) {
+					ToolyExceptionHandler.handle(ex);
+				}
+			}
+		});
 	}
 	public static ImageView getTypeIcon(String format){
 		String unknown = "_blank";
