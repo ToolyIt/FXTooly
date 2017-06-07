@@ -98,17 +98,18 @@ public class QueryExecutorController implements ToolyTabController{
 	}
 	@FXML
 	public void initialize() {
-		execute.setDisable(!ConnectorManager.get().isConnected());
+		execute.setDisable(!ConnectorManager.isConnected());
 
 		if (queryCache.getTabs().isEmpty()) {
 			addQueryCacheTab("Local cached queries", ToolyUtils.getObject(LOCAL_QUERY_HISTORY, Queries.class), this.localQueries);
-			if (ConnectorManager.get().isConnected()) {
+			if (ConnectorManager.isConnected()) {
 				Queries remoteQueries = DctmUtils.getObject(
-						ConnectorManager.get().getConnectedRepository().getSession(),
+						ConnectorManager.getSession(),
 						REMOTE_QUERY_HISTORY,
 						Queries.class);
 				addQueryCacheTab("Remote cached queries", remoteQueries, this.remoteQueries);
-				QueryResult qr = DctmUtils.executeQuery(ConnectorManager.get().getConnectedRepository().getSession(), "select name from dm_type order by name");
+				QueryResult qr = DctmUtils.executeQuery(ConnectorManager.getSession(),
+						"select name from dm_type order by name");
 				ObservableList<QueryResultRow> items = FXCollections.observableArrayList();
 				types.setItems(items);
 				items.addAll(qr.getRows());
@@ -140,7 +141,7 @@ public class QueryExecutorController implements ToolyTabController{
 	}
 	public void saveQuery() {
 		Queries object = DctmUtils.getObject(
-				ConnectorManager.get().getConnectedRepository().getSession(),
+				ConnectorManager.getSession(),
 				REMOTE_QUERY_HISTORY,
 				Queries.class);
 		boolean add = true;
@@ -156,7 +157,7 @@ public class QueryExecutorController implements ToolyTabController{
 		if (add) {
 			object.getList().add(new Query(queryName.getText(), query.getText()));
 		}
-		IDfSysObject saveObject = DctmUtils.saveObject(ConnectorManager.get().getConnectedRepository().getSession(),
+		IDfSysObject saveObject = DctmUtils.saveObject(ConnectorManager.getSession(),
 		REMOTE_QUERY_HISTORY, object);
 		if (saveObject != null) {
 			remoteQueries.clear();

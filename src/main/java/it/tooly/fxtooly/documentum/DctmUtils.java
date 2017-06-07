@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
+import com.documentum.fc.client.DfObjectNotFoundException;
 import com.documentum.fc.client.DfQuery;
 import com.documentum.fc.client.IDfCollection;
 import com.documentum.fc.client.IDfPersistentObject;
@@ -17,6 +18,7 @@ import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import it.tooly.dctmclient.model.IRepository;
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;
@@ -125,6 +127,20 @@ public class DctmUtils {
 			IOUtils.closeQuietly(content);
 		}
 	}
+
+	public static IDfSysObject getObject(String objectId) throws Exception {
+		IDfSysObject doc = null;
+		for (IRepository repo : ConnectorManager.getConnectedRepositories()) {
+			try {
+				doc = (IDfSysObject) ConnectorManager.getSession(repo).getObject(new DfId(objectId));
+			} catch (DfObjectNotFoundException nfe) {
+				// Ignore
+			}
+		}
+		if (doc == null)
+			throw new Exception("Object with id " + objectId + " not found in repository.");
+		return doc;
+	}
 	public static void showDump(IDfPersistentObject object){
 		try {
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -157,8 +173,7 @@ public class DctmUtils {
 	public static IDfPersistentObject getObject(QueryResult result, QueryResultRow row) throws DfException{
 		int ci = result.getColumnNames().indexOf(QueryResult.ATT_OBJECTID);
 		if (ci > -1) {
-			return ConnectorManager.get().getConnectedRepository()
-					.getSession().getObject(new DfId(row.getValues().get(ci)));
+			return ConnectorManager.getSession().getObject(new DfId(row.getValues().get(ci)));
 		} else return null;
 	}
 }

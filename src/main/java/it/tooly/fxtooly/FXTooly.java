@@ -5,12 +5,17 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.UUID;
 
-import it.tooly.fxtooly.model.Repository;
+import com.documentum.fc.common.DfException;
+
+import it.tooly.dctmclient.model.IRepository;
+import it.tooly.dctmclient.model.IUserAccount;
+import it.tooly.dctmclient.model.Repository;
+import it.tooly.dctmclient.model.UserAccount;
 import it.tooly.fxtooly.model.ToolySettings;
+//github.com/ToolyIt/FXTooly
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,7 +38,7 @@ public class FXTooly extends Application {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 		  @Override
 		    public void run() {
-			  ConnectorManager.get().disconnect();
+				ConnectorManager.disconnect();
 		    }
 		});
 		try {
@@ -58,12 +63,15 @@ public class FXTooly extends Application {
 		List<String> raw = parameters.getRaw();
 		if (raw.size() == 3) {
 			Platform.runLater(() ->{
-				Repository repository = new Repository(raw.get(0));
-				repository.setUsername(raw.get(1));
-				repository.setPassword(raw.get(2));
-				ConnectorManager.get().connect(repository);
-				FXTooly.setStatus("Connected to " + repository.getName() + " as " + repository.getUsername());
-				FXTooly.reInit();
+				try {
+					IRepository repository = new Repository(null, raw.get(0), null);
+					IUserAccount userAccount = new UserAccount(raw.get(1), raw.get(2));
+					ConnectorManager.connect(repository, userAccount);
+					FXTooly.setStatus("Connected to " + repository.getName() + " as " + userAccount.getLoginName());
+					FXTooly.reInit();
+				} catch (DfException e) {
+					ToolyExceptionHandler.handle(e);
+				}
 			});
 		}
 		primaryStage.show();

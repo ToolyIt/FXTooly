@@ -1,8 +1,10 @@
 package it.tooly.fxtooly.tab.connector;
 
+import it.tooly.dctmclient.model.IRepository;
+import it.tooly.dctmclient.model.IUserAccount;
+import it.tooly.dctmclient.model.UserAccount;
 import it.tooly.fxtooly.FXTooly;
 import it.tooly.fxtooly.ToolyTabController;
-import it.tooly.fxtooly.model.Repository;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,7 +16,7 @@ import javafx.scene.control.TextField;
 
 public class ConnectorController implements ToolyTabController{
 	@FXML
-	private ComboBox<Repository> repositories;
+	private ComboBox<IRepository> repositories;
 	@FXML
 	private TextField username;
 	@FXML
@@ -28,32 +30,32 @@ public class ConnectorController implements ToolyTabController{
     public void initialize() {
 		repositories.getItems().clear();
 		Platform.runLater(() ->{
-			repositories.getItems().addAll(ConnectorManager.get().getRepositories());
+			repositories.getItems().addAll(ConnectorManager.getRepositories());
 		});
 		username.setText("");
 		password.setText("");
 		connect.setDisable(true);
 		disconnect.setDisable(true);
-		repositories.valueProperty().addListener(new ChangeListener<Repository>() {
+		repositories.valueProperty().addListener(new ChangeListener<IRepository>() {
 			@Override
-			public void changed(ObservableValue<? extends Repository> observable, Repository oldValue,
-					Repository newValue) {
+			public void changed(ObservableValue<? extends IRepository> observable, IRepository oldValue,
+					IRepository newValue) {
 				if (newValue != null) {
-					connect.setDisable(newValue.getSession() != null);
-					disconnect.setDisable(newValue.getSession() == null);
+					connect.setDisable(ConnectorManager.isConnected(newValue));
+					disconnect.setDisable(!ConnectorManager.isConnected(newValue));
 				}
 			}
 
 		});
     }
 	public void connect() {
-		Repository repository = repositories.getSelectionModel().getSelectedItem();
-		repository.setUsername(username.getText());
-		repository.setPassword(password.getText());
-		ConnectorManager.get().connect(repository);
+		IRepository repository = repositories.getSelectionModel().getSelectedItem();
+		IUserAccount userAccount = new UserAccount(username.getText(), password.getText());
+		ConnectorManager.connect(repository, userAccount);
 		FXTooly.reInit();
 	}
+
 	public void disconnect() {
-		ConnectorManager.get().disconnect(repositories.getSelectionModel().getSelectedItem());
+		ConnectorManager.disconnect(repositories.getSelectionModel().getSelectedItem());
 	}
 }

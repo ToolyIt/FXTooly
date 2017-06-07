@@ -2,9 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>it.tooly</groupId>
 	<artifactId>FXTooly</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>FXTooly</name>
@@ -22,11 +20,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.emc.documentum</groupId>
-			<artifactId>dfc</artifactId>
-			<version>7.1.0200.0207</version>
-		</dependency>
-		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.8.8.1</version>
@@ -42,6 +35,14 @@
 			<version>4.5</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>it.tooly</groupId>
+			<artifactId>dctmclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>it.tooly</groupId>
+			<artifactId>shared</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
     <plugins>
@@ -56,4 +57,9 @@
       </plugin>
     </plugins>
   </build>
+	<parent>
+		<version>0.0.1-SNAPSHOT</version>
+		<groupId>it.tooly</groupId>
+		<artifactId>parent</artifactId>
+	</parent>
 </project>

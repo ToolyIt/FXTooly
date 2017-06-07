@@ -13,7 +13,6 @@ import it.tooly.fxtooly.documentum.DctmUtils;
 import it.tooly.fxtooly.documentum.ObjectDestroyer;
 import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;
-import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -37,6 +36,7 @@ public class ObjectContextMenu extends ToolyContextMenu {
 			DctmUtils.showDump(object);
 		});
 	}
+
 	public void addDestroyItem(IDfPersistentObject object){
 		MenuItem cut = new MenuItem("Destroy ..");
 		cut.setGraphic(ToolyUtils.getImage(ToolyUtils.IMAGE_TRASH));
@@ -57,9 +57,10 @@ public class ObjectContextMenu extends ToolyContextMenu {
 
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == ButtonType.OK){
-					ObjectDestroyer objectDestroyer = new ObjectDestroyer(
-							ConnectorManager.get().getConnectedRepository().getBackgroundSession(),
-							new String[]{object.getObjectId().getId()});
+					// ObjectDestroyer objectDestroyer = new ObjectDestroyer(
+					// ConnectorManager.get().getConnectedRepository().getBackgroundSession(),
+					// new String[]{object.getObjectId().getId()});
+					ObjectDestroyer objectDestroyer = new ObjectDestroyer(object);
 					Thread thread = new Thread(objectDestroyer);
 					thread.start();
 				}
