@@ -20,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class FXTooly extends Application {
@@ -74,6 +75,7 @@ public class FXTooly extends Application {
 				}
 			});
 		}
+		primaryStage.getIcons().add(new Image(FXTooly.class.getResourceAsStream("/fxtooly.png")));
 		primaryStage.show();
 	}
 	public static void setStatusField(TextField status){
