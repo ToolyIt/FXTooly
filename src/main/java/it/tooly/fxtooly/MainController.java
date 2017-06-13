@@ -8,6 +8,8 @@ import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 
+import it.tooly.fxtooly.model.ToolySetting;
+import it.tooly.fxtooly.model.ToolySettings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -20,8 +22,11 @@ public class MainController {
 	@FXML TabPane tabs;
 	@FXML Menu tabMenu;
 	@FXML
+	private ToolySetting selectedTabSetting = null;
+
 	public void initialize(){
 		try {
+			selectedTabSetting = ToolySettings.getLocalSetting(ToolySettings.S_TAB);
 			Enumeration<URL> resources = this.getClass().getClassLoader().getResources("");
 			List<ToolyPane> toolyPanes = new LinkedList<>();
 			while (resources.hasMoreElements()) {
@@ -68,6 +73,10 @@ public class MainController {
 			tab.setText(newPane.getName());
 			tab.setClosable(true);
 			tab.setContent(newPane);
+			if (selectedTabSetting.getValue() != null &&
+					((String) selectedTabSetting.getValue()).equals(newPane.getName())) {
+				this.tabs.getSelectionModel().select(tab);
+			}
 			FXTooly.getToolyPanes().add(newPane);
 			this.tabs.getTabs().add(tab);
 		} catch (InstantiationException | IllegalAccessException e1) {

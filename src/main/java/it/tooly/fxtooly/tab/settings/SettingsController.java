@@ -1,5 +1,7 @@
 package it.tooly.fxtooly.tab.settings;
 
+import java.util.List;
+
 import it.tooly.fxtooly.ToolyPaneController;
 import it.tooly.fxtooly.ToolyUtils;
 import it.tooly.fxtooly.model.ToolySetting;
@@ -25,6 +27,7 @@ public class SettingsController implements ToolyPaneController{
 			for (ToolySetting localSetting: localSettings.getList()) {
 				if (localSetting.getName().equals(s.getName())) {
 					localSetting.setDisplay(s.getDisplay());
+					localSetting.setSelection(s.getSelection());
 					add = false;
 				}
 			}
@@ -45,19 +48,21 @@ public class SettingsController implements ToolyPaneController{
 		settingCounter++;
 		Label l = new Label(s.getDisplay());
 		l.setLayoutY(settingCounter * space + 3.0);
-		if (s.getValue() instanceof Boolean) {
-			ComboBox<Boolean> cmb = new ComboBox<>();
-			cmb.getItems().add(true);
-			cmb.getItems().add(false);
+		if (s.getSelection() != null) {
+			ComboBox<Object> cmb = new ComboBox<>();
+			List<Object> selection = s.getSelection();
+			for (Object sel: selection) {
+				cmb.getItems().add(sel);
+			}
 			cmb.setLayoutX(120.0);
 			cmb.setLayoutY(settingCounter * space);
-			cmb.setValue((Boolean) s.getValue());
+			cmb.setValue(s.getValue());
 			cmb.valueProperty().addListener((ov, oldValue, newValue) ->{
 				s.setValue(newValue);
 				ToolyUtils.saveObject(LOCAL_SETTINGS, localSettings);
 			});
 			settingsPane.getChildren().add(cmb);
-		} else if (s.getValue() instanceof String) {
+		} else {
 			TextField tf = new TextField();
 			tf.setLayoutX(120.0);
 			tf.setLayoutY(settingCounter * space);

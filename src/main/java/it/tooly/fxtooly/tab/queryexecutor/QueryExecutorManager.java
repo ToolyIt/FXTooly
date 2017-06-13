@@ -7,11 +7,11 @@ import com.documentum.fc.common.DfException;
 
 import it.tooly.fxtooly.ToolyUtils;
 import it.tooly.fxtooly.documentum.DctmUtilsFX;
-import it.tooly.fxtooly.model.Queries;
-import it.tooly.fxtooly.model.Query;
-import it.tooly.fxtooly.model.QueryResult;
-import it.tooly.fxtooly.model.QueryResultRow;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
+import it.tooly.fxtooly.tab.queryexecutor.model.Queries;
+import it.tooly.fxtooly.tab.queryexecutor.model.Query;
+import it.tooly.fxtooly.tab.queryexecutor.model.QueryResult;
+import it.tooly.fxtooly.tab.queryexecutor.model.QueryResultRow;
 
 public class QueryExecutorManager {
 

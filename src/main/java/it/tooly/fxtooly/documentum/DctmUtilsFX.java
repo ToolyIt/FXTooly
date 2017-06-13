@@ -20,9 +20,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.tooly.dctmclient.model.IRepository;
 import it.tooly.fxtooly.ToolyExceptionHandler;
-import it.tooly.fxtooly.model.QueryResult;
-import it.tooly.fxtooly.model.QueryResultRow;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
+import it.tooly.fxtooly.tab.queryexecutor.model.QueryResult;
+import it.tooly.fxtooly.tab.queryexecutor.model.QueryResultRow;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;

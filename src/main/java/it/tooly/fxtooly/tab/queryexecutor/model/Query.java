@@ -1,4 +1,4 @@
-package it.tooly.fxtooly.model;
+package it.tooly.fxtooly.tab.queryexecutor.model;
 
 public class Query {
 	private String name;

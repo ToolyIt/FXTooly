@@ -1,4 +1,4 @@
-package it.tooly.fxtooly.model;
+package it.tooly.fxtooly.tab.queryexecutor.model;
 
 import java.util.LinkedList;
 import java.util.List;

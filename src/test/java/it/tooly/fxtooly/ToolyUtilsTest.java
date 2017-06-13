@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import it.tooly.fxtooly.model.Queries;
-import it.tooly.fxtooly.model.Query;
+import it.tooly.fxtooly.tab.queryexecutor.model.Queries;
+import it.tooly.fxtooly.tab.queryexecutor.model.Query;
 import junit.framework.Assert;
 
 public class ToolyUtilsTest {

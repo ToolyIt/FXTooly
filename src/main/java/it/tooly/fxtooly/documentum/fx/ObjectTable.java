@@ -10,8 +10,8 @@ import com.documentum.fc.common.DfException;
 
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.documentum.DctmUtilsFX;
-import it.tooly.fxtooly.model.QueryResult;
-import it.tooly.fxtooly.model.QueryResultRow;
+import it.tooly.fxtooly.tab.queryexecutor.model.QueryResult;
+import it.tooly.fxtooly.tab.queryexecutor.model.QueryResultRow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
