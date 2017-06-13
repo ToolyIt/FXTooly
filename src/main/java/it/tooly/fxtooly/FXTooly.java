@@ -2,6 +2,7 @@ package it.tooly.fxtooly;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,14 +28,8 @@ public class FXTooly extends Application {
 	private static String userId = UUID.randomUUID().toString();
 	private static TextField status = null;
 	private static Parent root = null;
-	private static List<ToolyTab> tabs = null;
+	private static List<ToolyPane> toolyPanes = new LinkedList<ToolyPane>();
 
-	public static void setTabs(List<ToolyTab> tabs){
-		FXTooly.tabs = tabs;
-	}
-	public static List<ToolyTab> getTabs(){
-		return FXTooly.tabs;
-	}
 	public static void main(String[] args) {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 		  @Override
@@ -65,7 +60,7 @@ public class FXTooly extends Application {
 		if (raw.size() == 3) {
 			Platform.runLater(() ->{
 				try {
-					IRepository repository = new Repository(null, raw.get(0), null);
+					IRepository repository = new Repository("unknown id", raw.get(0), null);
 					IUserAccount userAccount = new UserAccount(raw.get(1), raw.get(2));
 					ConnectorManager.connect(repository, userAccount);
 					FXTooly.setStatus("Connected to " + repository.getName() + " as " + userAccount.getLoginName());
@@ -89,13 +84,21 @@ public class FXTooly extends Application {
 		}
 	}
 	public static void reInit(){
-		for (ToolyTab tab: FXTooly.tabs) {
-			if (tab.getController() != null) {
-				tab.getController().initialize();
+		for (ToolyPane tPane: FXTooly.toolyPanes) {
+			if (tPane.getController() != null) {
+				tPane.getController().initialize();
 			}
 		}
 	}
 	public static String getUserId(){
 		return userId;
+	}
+
+	public static List<ToolyPane> getToolyPanes() {
+		return toolyPanes;
+	}
+
+	public static void setToolyPanes(List<ToolyPane> toolyPanes) {
+		FXTooly.toolyPanes = toolyPanes;
 	}
 }

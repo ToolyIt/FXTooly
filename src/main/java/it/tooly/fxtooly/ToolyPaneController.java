@@ -1,5 +1,5 @@
 package it.tooly.fxtooly;
 
-public interface ToolyTabController {
+public interface ToolyPaneController {
 	public void initialize();
 }

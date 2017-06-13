@@ -8,47 +8,47 @@
 <?import it.tooly.fxtooly.documentum.fx.ObjectTable?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="it.tooly.fxtooly.tab.queryexecutor.QueryExecutorController">
-  <content>
-    <SplitPane dividerPositions="0.19068736141906872, 0.458980044345898" focusTraversable="true" orientation="VERTICAL" prefHeight="453.0" prefWidth="800.0">
-      <items>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-          <TabPane fx:id="queryCache" prefHeight="83.0" prefWidth="798.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-        </AnchorPane>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-          <SplitPane dividerPositions="0.6972361809045227" focusTraversable="true" maxHeight="150.0" minHeight="-1.0" minWidth="-1.0" prefHeight="59.0" prefWidth="628.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <items>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                <children>
-                  <TextArea fx:id="query" prefHeight="158.0" prefWidth="552.0" style="-fx-font: 15 System;" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                </children>
-              </AnchorPane>
-              <AnchorPane maxWidth="280.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="280.0">
-                <children>
-                  <BorderPane prefHeight="113.0" prefWidth="238.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <center>
-						<AnchorPane>
-							<children>
-								  <TextField fx:id="queryName" layoutX="4.0" layoutY="4.0" prefWidth="142.0" />
-				                  <Button fx:id="saveQuery" layoutX="150.0" layoutY="5.0" mnemonicParsing="false" onAction="#saveQuery" prefWidth="88.0" text="Save Query" />
-				                  <ComboBox fx:id="types" layoutX="4.0" layoutY="32.0" onAction="#selectType" prefWidth="142.0" />
-				                  <Button layoutX="4.0" layoutY="57.0" mnemonicParsing="false" onAction="#switchUpdateSelect" prefWidth="142.0" text="Switch update/select" />
-							</children>
-						</AnchorPane>
-                    </center>
-                    <bottom>
-                      <Button fx:id="execute" mnemonicParsing="false" onAction="#execute" prefHeight="20.0" prefWidth="234.0" text="Execute" textFill="#0029ff"/>
-                    </bottom>
-                  </BorderPane>
-                </children>
-              </AnchorPane>
-            </items>
-          </SplitPane>
-        </AnchorPane>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-          <ObjectTable fx:id="results" prefHeight="137.0" prefWidth="628.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-        </AnchorPane>
-      </items>
-    </SplitPane>
-  </content>
+<fx:root type="javafx.scene.layout.BorderPane"  prefHeight="353.0" prefWidth="630.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="it.tooly.fxtooly.tab.queryexecutor.QueryExecutorController">
+	<top>
+	  <AnchorPane minHeight="100.0" minWidth="0.0" prefHeight="200.0" prefWidth="160.0">
+	    <TabPane fx:id="queryCache" prefHeight="83.0" prefWidth="798.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+	  </AnchorPane>
+	</top>
+	<center>
+	  <AnchorPane minHeight="200.0" minWidth="0.0" prefHeight="200.0" prefWidth="160.0">
+	    <SplitPane dividerPositions="0.6972361809045227" focusTraversable="true" maxHeight="150.0" minHeight="-1.0" minWidth="-1.0" prefHeight="59.0" prefWidth="628.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+	      <items>
+	        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+	          <children>
+	            <TextArea fx:id="query" prefHeight="158.0" prefWidth="552.0" style="-fx-font: 15 System;" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+	          </children>
+	        </AnchorPane>
+	        <AnchorPane maxWidth="280.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="280.0">
+	          <children>
+	            <BorderPane prefHeight="113.0" prefWidth="238.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+	              <center>
+					<AnchorPane>
+						<children>
+							  <TextField fx:id="queryName" layoutX="4.0" layoutY="4.0" prefWidth="142.0" />
+					                <Button fx:id="saveQuery" layoutX="150.0" layoutY="5.0" mnemonicParsing="false" onAction="#saveQuery" prefWidth="88.0" text="Save Query" />
+					                <ComboBox fx:id="types" layoutX="4.0" layoutY="32.0" onAction="#selectType" prefWidth="142.0" />
+					                <Button layoutX="4.0" layoutY="57.0" mnemonicParsing="false" onAction="#switchUpdateSelect" prefWidth="142.0" text="Switch update/select" />
+						</children>
+					</AnchorPane>
+	              </center>
+	              <bottom>
+	                <Button fx:id="execute" mnemonicParsing="false" onAction="#execute" prefHeight="20.0" prefWidth="234.0" text="Execute" textFill="#0029ff"/>
+	              </bottom>
+	            </BorderPane>
+	          </children>
+	        </AnchorPane>
+	      </items>
+	    </SplitPane>
+	  </AnchorPane>
+	</center>
+	<bottom>
+	  <AnchorPane minHeight="400.0" minWidth="0.0" prefHeight="400.0" prefWidth="160.0">
+	    <ObjectTable fx:id="results" prefHeight="137.0" prefWidth="628.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+	  </AnchorPane>
+	</bottom>
 </fx:root>

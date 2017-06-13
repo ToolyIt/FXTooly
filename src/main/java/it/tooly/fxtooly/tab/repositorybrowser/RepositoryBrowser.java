@@ -1,8 +1,8 @@
 package it.tooly.fxtooly.tab.repositorybrowser;
 
-import it.tooly.fxtooly.ToolyTab;
+import it.tooly.fxtooly.ToolyPane;
 
-public class RepositoryBrowser extends ToolyTab{
+public class RepositoryBrowser extends ToolyPane{
 	public RepositoryBrowser() {
 		super();
 	}
