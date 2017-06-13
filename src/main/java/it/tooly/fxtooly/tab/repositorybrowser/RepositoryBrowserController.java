@@ -3,7 +3,7 @@ package it.tooly.fxtooly.tab.repositorybrowser;
 import com.documentum.fc.common.DfException;
 
 import it.tooly.fxtooly.ToolyExceptionHandler;
-import it.tooly.fxtooly.ToolyTabController;
+import it.tooly.fxtooly.ToolyPaneController;
 import it.tooly.fxtooly.ToolyUtils;
 import it.tooly.fxtooly.documentum.fx.ObjectContextMenu;
 import it.tooly.fxtooly.documentum.fx.ObjectTable;
@@ -14,7 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
-public class RepositoryBrowserController implements ToolyTabController{
+public class RepositoryBrowserController implements ToolyPaneController{
 	private RepositoryBrowserManager rbm = new RepositoryBrowserManager();
 	@FXML
 	private TreeView<QueryResultRow> folders;

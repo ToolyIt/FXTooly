@@ -6,25 +6,21 @@
 <?import javafx.scene.layout.*?>
 <?import it.tooly.fxtooly.documentum.fx.ObjectTable?>
 
-<fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="it.tooly.fxtooly.tab.repositorybrowser.RepositoryBrowserController">
-  <content>
-    <BorderPane prefHeight="353.0" prefWidth="630.0">
-      <center>
-        <SplitPane dividerPositions="0.39937106918238996" focusTraversable="true" prefHeight="160.0" prefWidth="200.0">
-          <items>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-              <children>
-                <TreeView fx:id="folders" prefHeight="331.0" prefWidth="185.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-              </children>
-            </AnchorPane>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-              <children>
-                <ObjectTable fx:id="documents" prefHeight="331.0" prefWidth="437.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-              </children>
-            </AnchorPane>
-          </items>
-        </SplitPane>
-      </center>
-    </BorderPane>
-  </content>
+<fx:root type="javafx.scene.layout.BorderPane" prefHeight="353.0" prefWidth="630.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.tooly.fxtooly.tab.repositorybrowser.RepositoryBrowserController">
+	<center>
+	  <SplitPane dividerPositions="0.39937106918238996" focusTraversable="true" prefHeight="160.0" prefWidth="200.0">
+	    <items>
+	      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+	        <children>
+	          <TreeView fx:id="folders" prefHeight="331.0" prefWidth="185.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+	        </children>
+	      </AnchorPane>
+	      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+	        <children>
+	          <ObjectTable fx:id="documents" prefHeight="331.0" prefWidth="437.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+	        </children>
+	      </AnchorPane>
+	    </items>
+	  </SplitPane>
+	</center>
 </fx:root>

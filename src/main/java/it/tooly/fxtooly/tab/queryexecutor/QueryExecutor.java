@@ -1,8 +1,8 @@
 package it.tooly.fxtooly.tab.queryexecutor;
 
-import it.tooly.fxtooly.ToolyTab;
+import it.tooly.fxtooly.ToolyPane;
 
-public class QueryExecutor extends ToolyTab{
+public class QueryExecutor extends ToolyPane{
 	public QueryExecutor() {
 		super();
 	}

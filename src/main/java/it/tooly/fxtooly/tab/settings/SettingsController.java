@@ -1,6 +1,6 @@
 package it.tooly.fxtooly.tab.settings;
 
-import it.tooly.fxtooly.ToolyTabController;
+import it.tooly.fxtooly.ToolyPaneController;
 import it.tooly.fxtooly.ToolyUtils;
 import it.tooly.fxtooly.model.ToolySetting;
 import it.tooly.fxtooly.model.ToolySettings;
@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
-public class SettingsController implements ToolyTabController{
+public class SettingsController implements ToolyPaneController{
 	public final static String LOCAL_SETTINGS = "local_settings";
 	@FXML
 	AnchorPane settingsPane;

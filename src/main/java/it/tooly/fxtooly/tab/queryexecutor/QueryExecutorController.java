@@ -5,7 +5,7 @@ import com.documentum.fc.common.DfException;
 
 import it.tooly.fxtooly.FXTooly;
 import it.tooly.fxtooly.ToolyExceptionHandler;
-import it.tooly.fxtooly.ToolyTabController;
+import it.tooly.fxtooly.ToolyPaneController;
 import it.tooly.fxtooly.ToolyUtils;
 import it.tooly.fxtooly.documentum.DctmUtils;
 import it.tooly.fxtooly.documentum.fx.ObjectTable;
@@ -30,7 +30,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 
-public class QueryExecutorController implements ToolyTabController{
+public class QueryExecutorController implements ToolyPaneController{
 	public final static String LOCAL_QUERY_HISTORY = "local_queries";
 	public final static String REMOTE_QUERY_HISTORY = "remote_queries";
 	@FXML

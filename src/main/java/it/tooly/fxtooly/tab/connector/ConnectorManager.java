@@ -25,7 +25,21 @@ public class ConnectorManager {
 		ModelMap<Repository> repoMap = null;
 		try {
 			repoMap = DctmClient.getInstance().loadRepositoryMap();
-			return new ArrayList<>(repoMap.values());
+			List<IRepository> repos = new ArrayList<>(repoMap.values());
+			List<IRepository> allRepos = new ArrayList<>();
+			for (IRepository repo: repos) {
+				boolean add = true;
+				for (IRepository crepo: connectedRepos) {
+					if (repo.getName().equals(crepo.getName())) {
+						allRepos.add(crepo);
+						add = false;
+					}
+				}
+				if (add) {
+					allRepos.add(repo);
+				}
+			}
+			return allRepos;
 		} catch (DfException e) {
 			ToolyExceptionHandler.handle("error.getting.repositories", e);
 		}

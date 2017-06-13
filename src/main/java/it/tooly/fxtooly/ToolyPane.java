@@ -3,12 +3,12 @@ package it.tooly.fxtooly;
 import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Tab;
+import javafx.scene.layout.BorderPane;
 
-public abstract class ToolyTab extends Tab{
-	private ToolyTabController controller = null;
+public class ToolyPane extends BorderPane {
+	private ToolyPaneController controller = null;
 
-	public ToolyTab(){
+	public ToolyPane(){
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(this.getClass().getSimpleName() + ".fxml"));
 		fxmlLoader.setClassLoader(getClass().getClassLoader());
 		fxmlLoader.setRoot(this);
@@ -19,10 +19,10 @@ public abstract class ToolyTab extends Tab{
 			e.printStackTrace();
 		}
 	}
-	public String getToolyTabName(){
-		return this.getClass().getSimpleName().replaceAll("([A-Z])", " $1");
-	}
-	public ToolyTabController getController(){
+	public ToolyPaneController getController(){
 		return controller;
+	}
+	public String getName() {
+		return this.getClass().getSimpleName().replaceAll("([A-Z])", " $1");
 	}
 }

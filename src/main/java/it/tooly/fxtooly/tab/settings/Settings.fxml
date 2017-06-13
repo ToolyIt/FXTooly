@@ -6,12 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="it.tooly.fxtooly.tab.settings.SettingsController">
-  <content>
-    <BorderPane prefHeight="353.0" prefWidth="630.0">
-      <center>
-        <AnchorPane fx:id="settingsPane" maxHeight="180.0" maxWidth="300.0" minHeight="0.0" minWidth="0.0" prefHeight="280.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
-      </center>
-    </BorderPane>
-  </content>
+<fx:root type="javafx.scene.layout.BorderPane" prefHeight="353.0" prefWidth="630.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="it.tooly.fxtooly.tab.settings.SettingsController">
+	<center>
+	  <AnchorPane fx:id="settingsPane" maxHeight="180.0" maxWidth="300.0" minHeight="0.0" minWidth="0.0" prefHeight="280.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+	</center>
 </fx:root>

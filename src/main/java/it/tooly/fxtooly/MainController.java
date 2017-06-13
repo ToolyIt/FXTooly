@@ -11,6 +11,7 @@ import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 
@@ -22,24 +23,22 @@ public class MainController {
 	public void initialize(){
 		try {
 			Enumeration<URL> resources = this.getClass().getClassLoader().getResources("");
-			List<ToolyTab> tabs = new LinkedList<>();
+			List<ToolyPane> toolyPanes = new LinkedList<>();
 			while (resources.hasMoreElements()) {
 				URL el = resources.nextElement();
 				File root = new File(el.toURI());
-				searchTabs(root, root, tabs);
+				searchTabs(root, root, toolyPanes);
 			}
-			this.tabs.getTabs().addAll(tabs);
 			this.tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
-			FXTooly.setTabs(tabs);
 			FXTooly.setStatusField(status);
 		} catch (Exception e){
 			e.printStackTrace();
 		}
 	}
-	public List<ToolyTab> searchTabs(File root, File folder, List<ToolyTab> tabs) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException{
+	public List<ToolyPane> searchTabs(File root, File folder, List<ToolyPane> toolyPanes) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException{
 		for (File file : folder.listFiles()) {
 			if (file.isDirectory()) {
-				searchTabs(root, file, tabs);
+				searchTabs(root, file, toolyPanes);
 			} else {
 			    String path = file.getAbsolutePath();
 			    if (path.endsWith("fxml")) {
@@ -48,20 +47,10 @@ public class MainController {
 			    		try (URLClassLoader cl = URLClassLoader.newInstance(new URL[]{root.toURI().toURL()})){
 			    			String clazz = tabClass.getAbsolutePath().substring(root.getAbsolutePath().length() + 1, tabClass.getAbsolutePath().length() - 6);
 				    		Class<?> cls = cl.loadClass(clazz.replace("\\", "."));
-				    		ToolyTab toolyTab = (ToolyTab) cls.newInstance();
-				    		toolyTab.setText(toolyTab.getToolyTabName());
-				    		toolyTab.setClosable(true);
-				    		tabs.add(toolyTab);
-				    		MenuItem menuItem = new MenuItem("Add " + toolyTab.getToolyTabName() + " tab");
+				    		ToolyPane toolyPane = addContent(cls);
+				    		MenuItem menuItem = new MenuItem("Add " + toolyPane.getName() + " tab");
 				    		menuItem.setOnAction(e -> {
-								try {
-									ToolyTab newToolyTab = (ToolyTab) cls.newInstance();
-									newToolyTab.setText(toolyTab.getToolyTabName());
-					    			FXTooly.getTabs().add(newToolyTab);
-					    			this.tabs.getTabs().add(newToolyTab);
-								} catch (InstantiationException | IllegalAccessException e1) {
-									ToolyExceptionHandler.handle(e1);
-								}
+				    			addContent(cls);
 				    		});
 				    		tabMenu.getItems().add(menuItem);
 			    		}
@@ -69,6 +58,21 @@ public class MainController {
 			    }
 			}
 		}
-		return tabs;
+		return toolyPanes;
+	}
+	private ToolyPane addContent(Class<?> cls) {
+		ToolyPane newPane = null;
+		try {
+			Tab tab = new Tab();
+			newPane = (ToolyPane) cls.newInstance();
+			tab.setText(newPane.getName());
+			tab.setClosable(true);
+			tab.setContent(newPane);
+			FXTooly.getToolyPanes().add(newPane);
+			this.tabs.getTabs().add(tab);
+		} catch (InstantiationException | IllegalAccessException e1) {
+			ToolyExceptionHandler.handle(e1);
+		}
+		return newPane;
 	}
 }
