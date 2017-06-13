@@ -7,7 +7,7 @@ import it.tooly.fxtooly.FXTooly;
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.ToolyTabController;
 import it.tooly.fxtooly.ToolyUtils;
-import it.tooly.fxtooly.documentum.DctmUtils;
+import it.tooly.fxtooly.documentum.DctmUtilsFX;
 import it.tooly.fxtooly.documentum.fx.ObjectTable;
 import it.tooly.fxtooly.model.Queries;
 import it.tooly.fxtooly.model.Query;
@@ -102,12 +102,12 @@ public class QueryExecutorController implements ToolyTabController{
 		queryCache.getTabs().clear();
 		addQueryCacheTab("Local cached queries", ToolyUtils.getObject(LOCAL_QUERY_HISTORY, Queries.class), this.localQueries);
 		if (ConnectorManager.isConnected()) {
-			Queries remoteQueries = DctmUtils.getObject(
+			Queries remoteQueries = DctmUtilsFX.getObject(
 					ConnectorManager.getSession(),
 					REMOTE_QUERY_HISTORY,
 					Queries.class);
 			addQueryCacheTab("Remote cached queries", remoteQueries, this.remoteQueries);
-			QueryResult qr = DctmUtils.executeQuery(ConnectorManager.getSession(),
+			QueryResult qr = DctmUtilsFX.executeQuery(ConnectorManager.getSession(),
 					"select name from dm_type order by name");
 			ObservableList<QueryResultRow> items = FXCollections.observableArrayList();
 			types.setItems(items);
@@ -138,7 +138,7 @@ public class QueryExecutorController implements ToolyTabController{
 		});
 	}
 	public void saveQuery() {
-		Queries object = DctmUtils.getObject(
+		Queries object = DctmUtilsFX.getObject(
 				ConnectorManager.getSession(),
 				REMOTE_QUERY_HISTORY,
 				Queries.class);
@@ -155,7 +155,7 @@ public class QueryExecutorController implements ToolyTabController{
 		if (add) {
 			object.getList().add(new Query(queryName.getText(), query.getText()));
 		}
-		IDfSysObject saveObject = DctmUtils.saveObject(ConnectorManager.getSession(),
+		IDfSysObject saveObject = DctmUtilsFX.saveObject(ConnectorManager.getSession(),
 		REMOTE_QUERY_HISTORY, object);
 		if (saveObject != null) {
 			remoteQueries.clear();

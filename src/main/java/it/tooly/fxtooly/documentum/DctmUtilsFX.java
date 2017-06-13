@@ -32,8 +32,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
 
-public class DctmUtils {
-	private DctmUtils() {
+public class DctmUtilsFX {
+	private DctmUtilsFX() {
 	}
 
 	public static void closeCollection(IDfCollection col) {
@@ -131,6 +131,7 @@ public class DctmUtils {
 	public static IDfSysObject getObject(String objectId) throws Exception {
 		IDfSysObject doc = null;
 		for (IRepository repo : ConnectorManager.getConnectedRepositories()) {
+
 			try {
 				doc = (IDfSysObject) ConnectorManager.getSession(repo).getObject(new DfId(objectId));
 			} catch (DfObjectNotFoundException nfe) {
@@ -141,6 +142,7 @@ public class DctmUtils {
 			throw new Exception("Object with id " + objectId + " not found in repository.");
 		return doc;
 	}
+
 	public static void showDump(IDfPersistentObject object){
 		try {
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -170,6 +172,7 @@ public class DctmUtils {
 			ToolyExceptionHandler.handle(e);
 		}
 	}
+
 	public static IDfPersistentObject getObject(QueryResult result, QueryResultRow row) throws DfException{
 		int ci = result.getColumnNames().indexOf(QueryResult.ATT_OBJECTID);
 		if (ci > -1) {

@@ -9,7 +9,7 @@ import com.documentum.fc.client.IDfPersistentObject;
 import com.documentum.fc.common.DfException;
 
 import it.tooly.fxtooly.ToolyExceptionHandler;
-import it.tooly.fxtooly.documentum.DctmUtils;
+import it.tooly.fxtooly.documentum.DctmUtilsFX;
 import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;
 import javafx.collections.FXCollections;
@@ -53,12 +53,12 @@ public class ObjectTable extends TableView<QueryResultRow>{
 			}
 			if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
 				try {
-					IDfPersistentObject object = DctmUtils.getObject(queryResult, selectedItem);
+					IDfPersistentObject object = DctmUtilsFX.getObject(queryResult, selectedItem);
 					if (object != null) {
 						if (object instanceof IDfDocument) {
 							Desktop.getDesktop().open(new File(((IDfDocument)object).getFile(null)));
 						} else {
-							DctmUtils.showDump(object);
+							DctmUtilsFX.showDump(object);
 						}
 					}
 				} catch (DfException | IOException ex) {

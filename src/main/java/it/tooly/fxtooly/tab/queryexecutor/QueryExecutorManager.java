@@ -6,7 +6,7 @@ import com.documentum.fc.client.IDfQuery;
 import com.documentum.fc.common.DfException;
 
 import it.tooly.fxtooly.ToolyUtils;
-import it.tooly.fxtooly.documentum.DctmUtils;
+import it.tooly.fxtooly.documentum.DctmUtilsFX;
 import it.tooly.fxtooly.model.Queries;
 import it.tooly.fxtooly.model.Query;
 import it.tooly.fxtooly.model.QueryResult;
@@ -35,7 +35,7 @@ public class QueryExecutorManager {
 				fr = false;
 			}
 		} finally {
-			DctmUtils.closeCollection(col);
+			DctmUtilsFX.closeCollection(col);
 		}
 		return qr;
 	}

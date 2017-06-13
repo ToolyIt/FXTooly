@@ -9,6 +9,7 @@ import javafx.scene.input.ClipboardContent;
 public class ToolyContextMenu extends ContextMenu {
 	public ToolyContextMenu(QueryResultRow row) {
 		super();
+		if (row.getValues() == null) return;
 		MenuItem mi = new MenuItem("To Clipboard");
 		mi.setGraphic(ToolyUtils.getImage(ToolyUtils.IMAGE_CLIPBOARD));
 		getItems().addAll(mi);

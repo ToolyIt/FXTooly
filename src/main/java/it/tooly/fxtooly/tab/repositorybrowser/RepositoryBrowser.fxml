@@ -25,9 +25,6 @@
           </items>
         </SplitPane>
       </center>
-      <right>
-        <ObjectTable fx:id="documentinfo" prefHeight="200.0" prefWidth="310.0" />
-      </right>
     </BorderPane>
   </content>
 </fx:root>

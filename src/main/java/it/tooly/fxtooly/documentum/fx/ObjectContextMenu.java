@@ -9,7 +9,7 @@ import com.documentum.fc.common.DfException;
 import it.tooly.fxtooly.ToolyContextMenu;
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.ToolyUtils;
-import it.tooly.fxtooly.documentum.DctmUtils;
+import it.tooly.fxtooly.documentum.DctmUtilsFX;
 import it.tooly.fxtooly.documentum.ObjectDestroyer;
 import it.tooly.fxtooly.model.QueryResult;
 import it.tooly.fxtooly.model.QueryResultRow;
@@ -21,7 +21,7 @@ import javafx.scene.control.MenuItem;
 public class ObjectContextMenu extends ToolyContextMenu {
 	public ObjectContextMenu(QueryResult result, QueryResultRow row) throws DfException{
 		super(row);
-		IDfPersistentObject object = DctmUtils.getObject(result, row);
+		IDfPersistentObject object = DctmUtilsFX.getObject(result, row);
 		if (object != null) {
 			addDumpItem(object);
 			addDestroyItem(object);
@@ -33,7 +33,7 @@ public class ObjectContextMenu extends ToolyContextMenu {
 		cut.setGraphic(ToolyUtils.getImage(ToolyUtils.IMAGE_DETAILS));
 		getItems().addAll(cut);
 		cut.setOnAction(ev ->{
-			DctmUtils.showDump(object);
+			DctmUtilsFX.showDump(object);
 		});
 	}
 
