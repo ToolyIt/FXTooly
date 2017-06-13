@@ -3,7 +3,7 @@ package it.tooly.fxtooly.tab.monitoring;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import it.tooly.fxtooly.documentum.DctmUtils;
+import it.tooly.fxtooly.documentum.DctmUtilsFX;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import it.tooly.fxtooly.tab.monitoring.model.MonitoringConfig;
 import it.tooly.fxtooly.tab.monitoring.model.MonitoringConfigs;
@@ -23,10 +23,10 @@ public class MonitoringManager {
 		return mm;
 	}
 	public MonitoringConfigs getMonitoringConfigs(){
-		return DctmUtils.getObject(ConnectorManager.getSession(), REMOTE_MONITORING_CONFIG, MonitoringConfigs.class);
+		return DctmUtilsFX.getObject(ConnectorManager.getSession(), REMOTE_MONITORING_CONFIG, MonitoringConfigs.class);
 	}
 	private MonitoringData getMonitoringData(MonitoringConfig config){
-		return DctmUtils.getObject(ConnectorManager.getSession(), REMOTE_MONITORING_DATA + config.getName(), MonitoringData.class);
+		return DctmUtilsFX.getObject(ConnectorManager.getSession(), REMOTE_MONITORING_DATA + config.getName(), MonitoringData.class);
 	}
 	public void startMonitoring(MonitoringConfig config){
 		if (monitoringThreads.containsKey(config)) {
