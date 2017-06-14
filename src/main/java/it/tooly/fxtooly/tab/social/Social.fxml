@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root type="javafx.scene.layout.BorderPane" prefHeight="353.0" prefWidth="630.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="it.tooly.fxtooly.tab.social.SocialController">
+	<center>
+	  <AnchorPane maxHeight="180.0" maxWidth="300.0" minHeight="0.0" minWidth="0.0" prefHeight="280.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+	</center>
+</fx:root>
