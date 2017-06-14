@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
+import it.tooly.fxtooly.FXTooly;
 import it.tooly.fxtooly.ToolyPaneController;
 import it.tooly.fxtooly.documentum.DctmUtilsFX;
 import it.tooly.fxtooly.model.ToolySettings;
@@ -86,7 +87,7 @@ public class SocialController implements ToolyPaneController{
 			m.setWhen(new Date());
 			Channel channel = DctmUtilsFX.getObject(ConnectorManager.getSession(), CHANNEL_MESSAGES, Channel.class);
 			channel.getMessages().add(m);
-			if (DctmUtilsFX.saveObject(ConnectorManager.getSession(), CHANNEL_MESSAGES, activeChannel) != null) {
+			if (DctmUtilsFX.saveObject(ConnectorManager.getSession(), CHANNEL_MESSAGES, channel) != null) {
 				display(channel);
 				message.setText("");
 			}
@@ -112,6 +113,7 @@ public class SocialController implements ToolyPaneController{
 			if (refresh) {
 				FXCollections.sort(items, (Comparator<Message>) (o1, o2) -> o1.getWhen().compareTo(o2.getWhen()));
 				Platform.runLater(() -> messages.scrollTo(items.size()-1));
+				FXTooly.requestFocus("new message!");
 			}
 		}
 	}

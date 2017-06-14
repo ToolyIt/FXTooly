@@ -3,11 +3,14 @@ package it.tooly.fxtooly.tab.social.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javafx.beans.property.StringProperty;
 
 public class Channel {
 	private StringProperty name;
 	private List<Message> messages = new LinkedList<Message>();
+	@JsonIgnore
 	private int vstamp = -99;
 	public StringProperty getName() {
 		return name;
