@@ -2,6 +2,7 @@ package it.tooly.fxtooly.documentum;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -82,7 +83,8 @@ public class DctmUtilsFX {
 		ObjectMapper om = new ObjectMapper();
 
 		try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-			IOUtils.write(om.writeValueAsBytes(content), bos);
+			byte[] writeValueAsBytes = om.writeValueAsBytes(content);
+			IOUtils.write(writeValueAsBytes, bos);
 
 			IDfSysObject object = (IDfSysObject) session.getObjectByQualification("dm_sysobject where folder('"
 					+ session.getUser(null).getDefaultFolder() + "') and object_name='" + type + "'");
@@ -98,6 +100,14 @@ public class DctmUtilsFX {
 			object.setContent(bos);
 
 			object.save();
+
+			Method[] methods = content.getClass().getMethods();
+			for (Method m: methods) {
+				if (m.getName().equals("setVstamp")) {
+					m.invoke(content, object.getVStamp());
+				}
+			}
+
 			return object;
 		} catch (Exception e) {
 			ToolyExceptionHandler.handle(e);
@@ -106,17 +116,32 @@ public class DctmUtilsFX {
 	}
 
 	public static <T> T getObject(IDfSession session, String type, Class<T> responseType) {
+		return getObject(session, type, responseType, -99);
+	}
+	public static <T> T getObject(IDfSession session, String type, Class<T> responseType, int prevVstamp) {
 		ByteArrayInputStream content = null;
 		try {
 			IDfSysObject object = (IDfSysObject) session.getObjectByQualification("dm_sysobject where folder('"
-					+ session.getUser(null).getDefaultFolder() + "') and object_name='" + type + "'");
-			if (object == null) {
+					+ session.getUser(null).getDefaultFolder() + "') and object_name='" + type + "'" + (prevVstamp != -99 ? " and i_vstamp != "+prevVstamp+"" : ""));
+			if (object == null && prevVstamp == -99) {
 				object = saveObject(session, type, responseType.newInstance());
+			}
+			if (object == null && prevVstamp != -99) {
+				return null;
 			}
 			if (object != null) {
 				content = object.getContent();
 				ObjectMapper om = new ObjectMapper();
-				return om.readValue(IOUtils.toByteArray(content), responseType);
+				T rObject = om.readValue(IOUtils.toByteArray(content), responseType);
+				if (prevVstamp != -1) {
+					Method[] methods = responseType.getMethods();
+					for (Method m: methods) {
+						if (m.getName().equals("setVstamp")) {
+							m.invoke(rObject, object.getVStamp());
+						}
+					}
+				}
+				return rObject;
 			} else {
 				return responseType.newInstance();
 			}

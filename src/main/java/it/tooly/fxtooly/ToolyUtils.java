@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,13 +18,13 @@ import com.documentum.fc.client.IDfSysObject;
 import com.documentum.fc.common.DfId;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 import it.tooly.dctmclient.model.IRepository;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class ToolyUtils {
+	public static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	public static final String IMAGE_FOLDER = "folder";
 	public static final String IMAGE_FOLDER_OPENED = "opened_folder";
 	public static final String IMAGE_HOME = "home";
@@ -119,5 +121,8 @@ public class ToolyUtils {
 			ToolyExceptionHandler.handle(e);
 			return null;
 		}
+	}
+	public static String format(Date date){
+		return sdf.format(date);
 	}
 }
