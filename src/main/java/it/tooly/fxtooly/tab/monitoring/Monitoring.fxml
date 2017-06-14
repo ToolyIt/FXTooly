@@ -3,8 +3,10 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -17,26 +19,25 @@
 	     <items>
 	       <AnchorPane maxHeight="290.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TextField layoutX="12.0" layoutY="24.0" />
-                  <TextArea layoutX="12.0" layoutY="67.0" prefHeight="117.0" prefWidth="134.0" />
-                  <TextField layoutX="12.0" layoutY="199.0" />
-               </children></AnchorPane>
-	       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                  <TextField fx:id="name" layoutX="3.0" layoutY="15.0" prefHeight="22.0" prefWidth="152.0" promptText="Monitor name" />
+                  <TextArea fx:id="query" wrapText="true" layoutX="3.0" layoutY="41.0" prefHeight="117.0" prefWidth="152.0" promptText="Monitor query" />
+                  <Slider fx:id="interval" layoutX="3.0" layoutY="182.0" max="300.0" min="5.0" prefHeight="13.0" prefWidth="153.0" value="5.0" />
+                  <Label fx:id="intervalLbl" layoutX="2.0" layoutY="164.0" text="Interval" />
+                  <Button fx:id="save" onAction="#save" layoutX="114.0" layoutY="200.0" mnemonicParsing="false" text="Save" />
+               </children>
+            </AnchorPane>
+	        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
 	            <children>
-	               <TableView prefHeight="0.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-	                 <columns>
-	                   <TableColumn prefWidth="75.0" text="C1" />
-	                   <TableColumn prefWidth="75.0" text="C2" />
-	                 </columns>
-	               </TableView>
-	            </children></AnchorPane>
+	               <TableView fx:id="monitorConfigs" prefHeight="0.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+	            </children>
+	        </AnchorPane>
 	     </items>
 	   </SplitPane>
 	</left>
 	<center>
-	   <LineChart BorderPane.alignment="CENTER">
+	   <LineChart fx:id="chart" BorderPane.alignment="CENTER">
 	     <xAxis>
-	       <CategoryAxis side="BOTTOM" />
+	       <NumberAxis fx:id="timeAxis" side="BOTTOM"/>
 	     </xAxis>
 	     <yAxis>
 	       <NumberAxis side="LEFT" />

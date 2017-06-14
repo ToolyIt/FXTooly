@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import com.documentum.fc.client.IDfDocument;
 import com.documentum.fc.client.IDfPersistentObject;
+import com.documentum.fc.client.IDfSysObject;
 import com.documentum.fc.common.DfException;
 
 import it.tooly.fxtooly.ToolyExceptionHandler;
@@ -55,8 +56,8 @@ public class ObjectTable extends TableView<QueryResultRow>{
 				try {
 					IDfPersistentObject object = DctmUtilsFX.getObject(queryResult, selectedItem);
 					if (object != null) {
-						if (object instanceof IDfDocument) {
-							Desktop.getDesktop().open(new File(((IDfDocument)object).getFile(null)));
+						if (object instanceof IDfSysObject && ((IDfSysObject) object).getContentSize() > 0 ) {
+							Desktop.getDesktop().open(new File(((IDfSysObject)object).getFile(null)));
 						} else {
 							DctmUtilsFX.showDump(object);
 						}

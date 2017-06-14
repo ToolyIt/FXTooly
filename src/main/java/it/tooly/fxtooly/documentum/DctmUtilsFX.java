@@ -94,7 +94,7 @@ public class DctmUtilsFX {
 				object.save();
 			}
 
-			object.setContentType("unknown");
+			object.setContentType("crtext");
 			object.setContent(bos);
 
 			object.save();
