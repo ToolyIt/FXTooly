@@ -14,6 +14,7 @@ import com.documentum.fc.client.IDfPersistentObject;
 import com.documentum.fc.client.IDfQuery;
 import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.client.IDfSysObject;
+import com.documentum.fc.client.IDfTypedObject;
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -143,7 +144,7 @@ public class DctmUtilsFX {
 		return doc;
 	}
 
-	public static void showDump(IDfPersistentObject object){
+	public static void showDump(IDfTypedObject object) {
 		try {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
