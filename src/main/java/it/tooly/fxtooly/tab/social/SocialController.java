@@ -116,7 +116,7 @@ public class SocialController implements ToolyPaneController{
 				FXCollections.sort(items, (Comparator<Message>) (o1, o2) -> o1.getWhen().compareTo(o2.getWhen()));
 				Platform.runLater(() -> messages.scrollTo(items.size()-1));
 				if (newMessage != null &&
-						!newMessage.getFrom().equals(ToolySettings.getLocalSetting(ToolySettings.S_USERNAME))) {
+						!newMessage.getFrom().equals((String) ToolySettings.getLocalSetting(ToolySettings.S_USERNAME).getValue())) {
 					FXTooly.requestFocus(newMessage.getText());
 				}
 			}
