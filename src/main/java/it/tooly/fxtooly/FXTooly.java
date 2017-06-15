@@ -88,6 +88,7 @@ public class FXTooly extends Application {
 
 			alert.showAndWait();
 		}
+		setStatus("A new message arrived: " + (message.length() > 100 ? message.substring(100) : message));
 	}
 	public static void setStatusField(TextField status){
 		FXTooly.status = status;

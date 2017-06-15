@@ -95,6 +95,7 @@ public class SocialController implements ToolyPaneController{
 		}
 	}
 	public void display(Channel channel){
+		Message newMessage = null;
 		if (channel != null) {
 			activeChannel = channel;
 			boolean refresh = false;
@@ -106,6 +107,7 @@ public class SocialController implements ToolyPaneController{
 				for (Message message: channel.getMessages()) {
 					if (!items.contains(message)) {
 						items.add(message);
+						newMessage = message;
 						refresh = true;
 					}
 				}
@@ -113,7 +115,10 @@ public class SocialController implements ToolyPaneController{
 			if (refresh) {
 				FXCollections.sort(items, (Comparator<Message>) (o1, o2) -> o1.getWhen().compareTo(o2.getWhen()));
 				Platform.runLater(() -> messages.scrollTo(items.size()-1));
-				FXTooly.requestFocus("new message!");
+				if (newMessage != null &&
+						!newMessage.getFrom().equals(ToolySettings.getLocalSetting(ToolySettings.S_USERNAME))) {
+					FXTooly.requestFocus(newMessage.getText());
+				}
 			}
 		}
 	}
