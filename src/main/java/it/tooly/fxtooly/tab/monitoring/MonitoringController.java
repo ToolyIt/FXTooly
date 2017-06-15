@@ -37,6 +37,10 @@ public class MonitoringController implements ToolyPaneController{
     Slider interval;
     @FXML
     Button save;
+    @FXML
+    Button stop;
+    @FXML
+    Button start;
 	@FXML
 	TableView<MonitoringConfig> monitorConfigs;
 	@FXML
@@ -62,17 +66,32 @@ public class MonitoringController implements ToolyPaneController{
 			monitorConfigs.setItems(observableArrayList);
 			intervalLbl.setText("Interval: 5s");
 			monitorConfigs.getSelectionModel().selectedItemProperty().addListener((obs, os, ns) -> {
-				name.setText(ns.getName());
-				query.setText(ns.getQuery());
-				interval.setValue(ns.getInterval());
-				intervalLbl.setText("Interval: " + ns.getInterval() + "s");
-				chart.setData(MonitoringManager.get().startMonitoring(ns));
-				timeAxis.setLabel("Seconds since " + new Date(MonitoringManager.get().getStartTime()));
-				MonitoringManager.get().stopMonitoring(os);
+				if (ns != null) {
+					start.setDisable(false);
+					name.setText(ns.getName());
+					query.setText(ns.getQuery());
+					interval.setValue(ns.getInterval());
+					intervalLbl.setText("Interval: " + ns.getInterval() + "s");
+				}
 			});
-
 		}
     }
+	public void startMonitoring(){
+		MonitoringConfig selectedItem = monitorConfigs.getSelectionModel().getSelectedItem();
+		if (selectedItem != null) {
+			MonitoringManager.get().stopMonitoring();
+			chart.setData(MonitoringManager.get().startMonitoring(selectedItem));
+			stop.setDisable(false);
+			start.setDisable(true);
+			timeAxis.setLabel("Seconds since " + new Date(MonitoringManager.get().getStartTime()));
+		}
+	}
+	public void stopMonitoring(){
+		MonitoringManager.get().stopMonitoring();
+		chart.getData().clear();
+		stop.setDisable(true);
+		monitorConfigs.getSelectionModel().clearSelection();
+	}
 	public void save(){
 		if (testQuery(query.getText())) {
 			MonitoringConfigs monitoringConfigs = MonitoringManager.get().getMonitoringConfigs();

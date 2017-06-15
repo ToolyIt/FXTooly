@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -20,10 +19,12 @@
 	       <AnchorPane maxHeight="290.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
                   <TextField fx:id="name" layoutX="3.0" layoutY="15.0" prefHeight="22.0" prefWidth="152.0" promptText="Monitor name" />
-                  <TextArea fx:id="query" wrapText="true" layoutX="3.0" layoutY="41.0" prefHeight="117.0" prefWidth="152.0" promptText="Monitor query" />
+                  <TextArea fx:id="query" layoutX="3.0" layoutY="41.0" prefHeight="117.0" prefWidth="152.0" promptText="Monitor query" wrapText="true" />
                   <Slider fx:id="interval" layoutX="3.0" layoutY="182.0" max="300.0" min="5.0" prefHeight="13.0" prefWidth="153.0" value="5.0" />
                   <Label fx:id="intervalLbl" layoutX="2.0" layoutY="164.0" text="Interval" />
-                  <Button fx:id="save" onAction="#save" layoutX="114.0" layoutY="200.0" mnemonicParsing="false" text="Save" />
+                  <Button fx:id="save" layoutX="114.0" layoutY="200.0" mnemonicParsing="false" onAction="#save" text="Save" />
+                  <Button fx:id="stop" disable="true" layoutX="72.0" layoutY="265.0" mnemonicParsing="false" onAction="#stopMonitoring" text="Stop" />
+                  <Button fx:id="start" disable="true" layoutX="114.0" layoutY="265.0" mnemonicParsing="false" onAction="#startMonitoring" text="Start" />
                </children>
             </AnchorPane>
 	        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -37,7 +38,7 @@
 	<center>
 	   <LineChart fx:id="chart" BorderPane.alignment="CENTER">
 	     <xAxis>
-	       <NumberAxis fx:id="timeAxis" side="BOTTOM"/>
+	       <NumberAxis fx:id="timeAxis" side="BOTTOM" />
 	     </xAxis>
 	     <yAxis>
 	       <NumberAxis side="LEFT" />

@@ -40,4 +40,12 @@ public class MonitoringConfig {
 	public String toString() {
 		return "name: " + name + " and interval: " + getInterval() + "s";
 	}
+	@Override
+	public boolean equals(Object arg0) {
+		if (arg0 != null) {
+			MonitoringConfig c = (MonitoringConfig) arg0;
+			return c.getName().equals(getName());
+		}
+		return false;
+	}
 }

@@ -3,6 +3,7 @@ package it.tooly.fxtooly.tab.monitoring;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import it.tooly.fxtooly.FXTooly;
 import it.tooly.fxtooly.documentum.DctmUtilsFX;
@@ -47,7 +48,6 @@ public class MonitoringManager {
 			return data;
 		}
 		monitoringData = getMonitoringData(config);
-		addData(monitoringData);
 		if (monitoringData.getData().isEmpty()) {
 			startTime = System.currentTimeMillis();
 		} else {
@@ -76,18 +76,20 @@ public class MonitoringManager {
         FXTooly.setStatus("Started monitoring config " + config.getName());
         return data;
 	}
+	public boolean isMonitoring(){
+		return !monitoringThreads.isEmpty();
+	}
+	public void stopMonitoring() {
+		for (Entry<MonitoringConfig, Thread> t: monitoringThreads.entrySet()) {
+			t.getValue().interrupt();
+		}
+		monitoringThreads.clear();
+	}
 	public void stopMonitoring(MonitoringConfig config) {
 		if (config != null && monitoringThreads.containsKey(config)) {
 			Thread thread = monitoringThreads.remove(config);
 			thread.interrupt();
 		}
-	}
-	private void addData(MonitoringData monitoringData) {
-//		Map<Long, Long> data = monitoringData.getData();
-//		Set<Entry<Long, Long>> entrySet = data.entrySet();
-//		for (Entry<Long, Long> entry: entrySet) {
-//			addData(entry.getKey(), entry.getValue());
-//		}
 	}
 	private void addData(String seriesName, long time, long yData){
 		Platform.runLater(() -> {
