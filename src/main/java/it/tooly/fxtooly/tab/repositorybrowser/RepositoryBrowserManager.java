@@ -5,10 +5,10 @@ import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
 
 import it.tooly.fxtooly.ToolyExceptionHandler;
-import it.tooly.fxtooly.model.QueryResult;
-import it.tooly.fxtooly.model.QueryResultRow;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import it.tooly.fxtooly.tab.queryexecutor.QueryExecutorManager;
+import it.tooly.fxtooly.tab.queryexecutor.model.QueryResult;
+import it.tooly.fxtooly.tab.queryexecutor.model.QueryResultRow;
 
 
 public class RepositoryBrowserManager {
@@ -32,7 +32,7 @@ public class RepositoryBrowserManager {
 			IDfSysObject object = (IDfSysObject) ConnectorManager.getSession().getObject(new DfId(objectId));
 			for (int i = 0; i< object.getAttrCount(); i++){
 				String name = object.getAttr(i).getName();
-				qr.getRows().add(new QueryResultRow(name, object.getString(name)));
+				qr.add(new QueryResultRow(name, object.getString(name)));
 			}
 		} catch (DfException e) {
 			ToolyExceptionHandler.handle(e);

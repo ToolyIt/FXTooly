@@ -5,11 +5,11 @@ import com.documentum.fc.common.DfException;
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.ToolyPaneController;
 import it.tooly.fxtooly.ToolyUtils;
-import it.tooly.fxtooly.documentum.fx.ObjectContextMenu;
 import it.tooly.fxtooly.documentum.fx.ObjectTable;
-import it.tooly.fxtooly.model.QueryResult;
-import it.tooly.fxtooly.model.QueryResultRow;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
+import it.tooly.fxtooly.tab.queryexecutor.control.QueryResultRowContextMenu;
+import it.tooly.fxtooly.tab.queryexecutor.model.QueryResult;
+import it.tooly.fxtooly.tab.queryexecutor.model.QueryResultRow;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -26,8 +26,7 @@ public class RepositoryBrowserController implements ToolyPaneController{
 	public void initialize() {
 		if (ConnectorManager.getSelectedRepository() != null) {
 			String name = ConnectorManager.getSelectedRepository().getName();
-			QueryResultRow qr = new QueryResultRow();
-			qr.getValues().add(name);
+			QueryResultRow qr = new QueryResultRow(name);
 			TreeItem<QueryResultRow> rootItem = new TreeItem<>(qr, ToolyUtils.getImage(ToolyUtils.IMAGE_HOME));
 			rootItem.setExpanded(true);
 			addSubFolders(rootItem, null);
@@ -35,14 +34,14 @@ public class RepositoryBrowserController implements ToolyPaneController{
 		}
 		folders.getSelectionModel().selectedItemProperty().addListener((o, oldValue, newValue) -> {
 			if (newValue.getValue().getValues().size() > 1) {
-				addSubFolders(newValue, newValue.getValue().getValues().get(1));
+				addSubFolders(newValue, newValue.getValue().getId());
 				newValue.setExpanded(true);
 				QueryResult documentsQueryResult;
 				try {
-					documentsQueryResult = rbm.getItems(newValue.getValue().getValues().get(1), false);
+					documentsQueryResult = rbm.getItems(newValue.getValue().getId(), false);
 					documents.getItems().clear();
 					documents.getColumns().clear();
-					documents.setQueryResult(documentsQueryResult);
+					documents.setObjects(documentsQueryResult);
 				} catch (DfException e) {
 					ToolyExceptionHandler.handle(e);
 				}
@@ -53,9 +52,9 @@ public class RepositoryBrowserController implements ToolyPaneController{
 		try {
 			QueryResult items = rbm.getItems(folderId, true);
 			rootItem.getChildren().clear();
-			for (QueryResultRow r : items.getRows()) {
+			for (QueryResultRow r : items) {
 				TreeItem<QueryResultRow> item = null;
-				if (!"0".equals(r.getValues().get(2))) {
+				if (!"0".equals(r.getAttrValue("r_link_cnt").toString())) {
 					item = new TreeItem<>(r, ToolyUtils.getImage(ToolyUtils.IMAGE_FOLDER_OPENED));
 				} else {
 					item = new TreeItem<>(r, ToolyUtils.getImage(ToolyUtils.IMAGE_FOLDER));
@@ -64,7 +63,7 @@ public class RepositoryBrowserController implements ToolyPaneController{
 				folders.setOnMousePressed(e -> {
 					if (e.isSecondaryButtonDown()) {
 						try {
-							folders.setContextMenu(new ObjectContextMenu(items, r));
+							folders.setContextMenu(new QueryResultRowContextMenu(items, r));
 						} catch (DfException ex) {
 							ToolyExceptionHandler.handle(ex);
 						}

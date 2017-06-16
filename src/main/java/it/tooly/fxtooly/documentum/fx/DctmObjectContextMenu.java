@@ -10,7 +10,7 @@ import com.documentum.fc.common.DfException;
 import it.tooly.dctmclient.model.DctmObject;
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.ToolyUtils;
-import it.tooly.fxtooly.control.ToolyContextMenu;
+import it.tooly.fxtooly.control.ObjectContextMenu;
 import it.tooly.fxtooly.documentum.DctmUtilsFX;
 import it.tooly.fxtooly.documentum.ObjectDestroyer;
 import javafx.scene.control.Alert;
@@ -18,8 +18,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 
-public class ObjectContextMenu extends ToolyContextMenu {
-	public ObjectContextMenu(DctmObject dctmObject) throws DfException {
+public class DctmObjectContextMenu extends ObjectContextMenu {
+	public DctmObjectContextMenu(DctmObject dctmObject) throws DfException {
 		super(dctmObject);
 
 		IDfTypedObject object = dctmObject.getTypedObject();

@@ -4,13 +4,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MonitoringData {
-	private Map<String, Integer> data = new LinkedHashMap<>();
+	private Map<Long, Long> data = new LinkedHashMap<>();
 
-	public Map<String, Integer> getData() {
+	public Map<Long, Long> getData() {
 		return data;
 	}
 
-	public void setData(Map<String, Integer> data) {
+	public void setData(Map<Long, Long> data) {
 		this.data = data;
 	}
 }

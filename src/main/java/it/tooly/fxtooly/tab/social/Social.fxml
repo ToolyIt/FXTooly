@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<fx:root prefHeight="353.0" prefWidth="630.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.tooly.fxtooly.tab.social.SocialController">
+   <center>
+      <TableView fx:id="messages" BorderPane.alignment="CENTER" />
+   </center>
+   <bottom>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <TextArea fx:id="message" maxHeight="300.0" prefHeight="200.0" prefWidth="200.0" promptText="Your message ..." BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font></TextArea>
+         </center>
+         <right>
+            <Button fx:id="send" disable="true" mnemonicParsing="false" onAction="#send" prefHeight="200.0" prefWidth="200.0" text="Send" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font></Button>
+         </right>
+      </BorderPane>
+   </bottom>
+</fx:root>

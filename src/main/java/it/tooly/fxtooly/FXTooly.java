@@ -20,6 +20,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -29,6 +31,7 @@ public class FXTooly extends Application {
 	private static TextField status = null;
 	private static Parent root = null;
 	private static List<ToolyPane> toolyPanes = new LinkedList<ToolyPane>();
+	private static boolean hasFocus = true;
 
 	public static void main(String[] args) {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -70,8 +73,22 @@ public class FXTooly extends Application {
 				}
 			});
 		}
+		primaryStage.focusedProperty().addListener((ov, ob, nb) -> {
+			hasFocus = nb;
+		});
 		primaryStage.getIcons().add(new Image(FXTooly.class.getResourceAsStream("/fxtooly.png")));
 		primaryStage.show();
+	}
+	public static void requestFocus(String message){
+		if (!hasFocus) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Alert information");
+			alert.setHeaderText("New message arrvied!");
+			alert.setContentText(message);
+
+			alert.showAndWait();
+		}
+		setStatus("A new message arrived: " + (message.length() > 100 ? message.substring(100) : message));
 	}
 	public static void setStatusField(TextField status){
 		FXTooly.status = status;

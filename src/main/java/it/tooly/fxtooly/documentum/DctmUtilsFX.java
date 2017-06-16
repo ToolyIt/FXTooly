@@ -2,6 +2,7 @@ package it.tooly.fxtooly.documentum;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,11 +20,13 @@ import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import it.tooly.dctmclient.model.DctmObject;
 import it.tooly.dctmclient.model.IRepository;
+import it.tooly.dctmclient.util.DctmUtils;
 import it.tooly.fxtooly.ToolyExceptionHandler;
-import it.tooly.fxtooly.model.QueryResult;
-import it.tooly.fxtooly.model.QueryResultRow;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
+import it.tooly.fxtooly.tab.queryexecutor.model.QueryResult;
+import it.tooly.fxtooly.tab.queryexecutor.model.QueryResultRow;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -59,7 +62,7 @@ public class DctmUtilsFX {
 		try {
 			col = executeQuery(session, queryString, DfQuery.EXECREAD_QUERY);
 			while (col.next()) {
-				QueryResultRow qrr = new QueryResultRow();
+
 				List<String> values = new LinkedList<>();
 				for (int i = 0; i < col.getAttrCount(); i++) {
 					if (qr.getColumnNames().isEmpty()) {
@@ -67,8 +70,8 @@ public class DctmUtilsFX {
 					}
 					values.add(col.getString(col.getAttr(i).getName()));
 				}
-				qrr.setValues(values);
-				qr.getRows().add(qrr);
+				QueryResultRow qrr = new QueryResultRow(values);
+				qr.add(qrr);
 			}
 		} catch (DfException e){
 			ToolyExceptionHandler.handle(e);
@@ -83,7 +86,8 @@ public class DctmUtilsFX {
 		ObjectMapper om = new ObjectMapper();
 
 		try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-			IOUtils.write(om.writeValueAsBytes(content), bos);
+			byte[] writeValueAsBytes = om.writeValueAsBytes(content);
+			IOUtils.write(writeValueAsBytes, bos);
 
 			IDfSysObject object = (IDfSysObject) session.getObjectByQualification("dm_sysobject where folder('"
 					+ session.getUser(null).getDefaultFolder() + "') and object_name='" + type + "'");
@@ -95,10 +99,18 @@ public class DctmUtilsFX {
 				object.save();
 			}
 
-			object.setContentType("unknown");
+			object.setContentType("crtext");
 			object.setContent(bos);
 
 			object.save();
+
+			Method[] methods = content.getClass().getMethods();
+			for (Method m: methods) {
+				if (m.getName().equals("setVstamp")) {
+					m.invoke(content, object.getVStamp());
+				}
+			}
+
 			return object;
 		} catch (Exception e) {
 			ToolyExceptionHandler.handle(e);
@@ -107,17 +119,32 @@ public class DctmUtilsFX {
 	}
 
 	public static <T> T getObject(IDfSession session, String type, Class<T> responseType) {
+		return getObject(session, type, responseType, -99);
+	}
+	public static <T> T getObject(IDfSession session, String type, Class<T> responseType, int prevVstamp) {
 		ByteArrayInputStream content = null;
 		try {
 			IDfSysObject object = (IDfSysObject) session.getObjectByQualification("dm_sysobject where folder('"
-					+ session.getUser(null).getDefaultFolder() + "') and object_name='" + type + "'");
-			if (object == null) {
+					+ session.getUser(null).getDefaultFolder() + "') and object_name='" + type + "'" + (prevVstamp != -99 ? " and i_vstamp != "+prevVstamp+"" : ""));
+			if (object == null && prevVstamp == -99) {
 				object = saveObject(session, type, responseType.newInstance());
+			}
+			if (object == null && prevVstamp != -99) {
+				return null;
 			}
 			if (object != null) {
 				content = object.getContent();
 				ObjectMapper om = new ObjectMapper();
-				return om.readValue(IOUtils.toByteArray(content), responseType);
+				T rObject = om.readValue(IOUtils.toByteArray(content), responseType);
+				if (prevVstamp != -1) {
+					Method[] methods = responseType.getMethods();
+					for (Method m: methods) {
+						if (m.getName().equals("setVstamp")) {
+							m.invoke(rObject, object.getVStamp());
+						}
+					}
+				}
+				return rObject;
 			} else {
 				return responseType.newInstance();
 			}
@@ -177,7 +204,12 @@ public class DctmUtilsFX {
 	public static IDfPersistentObject getObject(QueryResult result, QueryResultRow row) throws DfException{
 		int ci = result.getColumnNames().indexOf(QueryResult.ATT_OBJECTID);
 		if (ci > -1) {
-			return ConnectorManager.getSession().getObject(new DfId(row.getValues().get(ci)));
+			return ConnectorManager.getSession().getObject(new DfId((String) row.getValues().get(ci)));
 		} else return null;
+	}
+
+	public static DctmObject getDctmObject(QueryResult result, QueryResultRow row) throws DfException {
+		IDfPersistentObject pObj = getObject(result, row);
+		return DctmUtils.getObject(pObj);
 	}
 }
