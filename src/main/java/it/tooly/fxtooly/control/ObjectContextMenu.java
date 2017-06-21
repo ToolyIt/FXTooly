@@ -42,9 +42,14 @@ public class ObjectContextMenu extends ContextMenu {
 		getItems().addAll(cut);
 		cut.setOnAction(ev -> {
 			if (object instanceof DctmObject) {
-				IDfTypedObject typedObj = ((DctmObject) object).getTypedObject();
-				if (typedObj != null)
-					DctmUtilsFX.showDump(typedObj);
+				IDfSysObject object2Dump = null;
+				try {
+					object2Dump = DctmUtilsFX.getObject(object.getId());
+				} catch (Exception e) {
+					ToolyExceptionHandler.handle(e);
+				}
+				if (object2Dump != null)
+					DctmUtilsFX.showDump(object2Dump);
 			} else {
 				// TODO Default dump for any model object
 			}
