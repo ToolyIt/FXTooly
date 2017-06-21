@@ -5,7 +5,7 @@ import com.documentum.fc.common.DfException;
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.ToolyPaneController;
 import it.tooly.fxtooly.ToolyUtils;
-import it.tooly.fxtooly.documentum.fx.ObjectTable;
+import it.tooly.fxtooly.documentum.control.QueryResultTable;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import it.tooly.fxtooly.tab.queryexecutor.control.QueryResultRowContextMenu;
 import it.tooly.fxtooly.tab.queryexecutor.model.QueryResult;
@@ -20,7 +20,7 @@ public class RepositoryBrowserController implements ToolyPaneController{
 	private TreeView<QueryResultRow> folders;
 
 	@FXML
-	private ObjectTable documents;
+	private QueryResultTable documents;
 
 	@FXML
 	public void initialize() {
@@ -41,7 +41,7 @@ public class RepositoryBrowserController implements ToolyPaneController{
 					documentsQueryResult = rbm.getItems(newValue.getValue().getId(), false);
 					documents.getItems().clear();
 					documents.getColumns().clear();
-					documents.setObjects(documentsQueryResult);
+					documents.setQueryResult(documentsQueryResult);
 				} catch (DfException e) {
 					ToolyExceptionHandler.handle(e);
 				}

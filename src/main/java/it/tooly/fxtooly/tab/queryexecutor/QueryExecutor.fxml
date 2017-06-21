@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import it.tooly.fxtooly.documentum.fx.ObjectTable?>
+<?import it.tooly.fxtooly.documentum.control.QueryResultTable?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <fx:root type="javafx.scene.layout.BorderPane"  prefHeight="353.0" prefWidth="630.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="it.tooly.fxtooly.tab.queryexecutor.QueryExecutorController">
@@ -48,7 +48,7 @@
 	</center>
 	<bottom>
 	  <AnchorPane minHeight="400.0" minWidth="0.0" prefHeight="400.0" prefWidth="160.0">
-	    <ObjectTable fx:id="results" prefHeight="137.0" prefWidth="628.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+	    <QueryResultTable fx:id="results" prefHeight="137.0" prefWidth="628.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 	  </AnchorPane>
 	</bottom>
 </fx:root>

@@ -18,11 +18,10 @@ import com.documentum.fc.client.IDfSysObject;
 import com.documentum.fc.client.IDfTypedObject;
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
+import com.documentum.fc.common.IDfId;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.tooly.dctmclient.model.DctmObject;
 import it.tooly.dctmclient.model.IRepository;
-import it.tooly.dctmclient.util.DctmUtils;
 import it.tooly.fxtooly.ToolyExceptionHandler;
 import it.tooly.fxtooly.tab.connector.ConnectorManager;
 import it.tooly.fxtooly.tab.queryexecutor.model.QueryResult;
@@ -157,11 +156,15 @@ public class DctmUtilsFX {
 	}
 
 	public static IDfSysObject getObject(String objectId) throws Exception {
+		if (!DfId.isObjectId(objectId))
+			throw new Exception(objectId + " is not a valid object id");
 		IDfSysObject doc = null;
+		IDfId id = DfId.valueOf(objectId);
 		for (IRepository repo : ConnectorManager.getConnectedRepositories()) {
-
+			if (Long.parseLong(repo.getId()) != id.getNumericDocbaseId())
+				continue;
 			try {
-				doc = (IDfSysObject) ConnectorManager.getSession(repo).getObject(new DfId(objectId));
+				doc = (IDfSysObject) ConnectorManager.getSession(repo).getObject(id);
 			} catch (DfObjectNotFoundException nfe) {
 				// Ignore
 			}
@@ -201,15 +204,14 @@ public class DctmUtilsFX {
 		}
 	}
 
-	public static IDfPersistentObject getObject(QueryResult result, QueryResultRow row) throws DfException{
-		int ci = result.getColumnNames().indexOf(QueryResult.ATT_OBJECTID);
-		if (ci > -1) {
-			return ConnectorManager.getSession().getObject(new DfId((String) row.getValues().get(ci)));
-		} else return null;
+	public static IDfPersistentObject getObject(QueryResultRow row) throws Exception {
+		IDfTypedObject typedObject = row.getTypedObject();
+		if (typedObject != null && typedObject instanceof IDfPersistentObject) {
+			return (IDfPersistentObject) typedObject;
+		} else {
+			return getObject(row.getId());
+		}
+
 	}
 
-	public static DctmObject getDctmObject(QueryResult result, QueryResultRow row) throws DfException {
-		IDfPersistentObject pObj = getObject(result, row);
-		return DctmUtils.getObject(pObj);
-	}
 }
