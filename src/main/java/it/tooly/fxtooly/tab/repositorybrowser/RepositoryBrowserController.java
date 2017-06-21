@@ -24,7 +24,7 @@ public class RepositoryBrowserController implements ToolyPaneController{
 
 	@FXML
 	public void initialize() {
-		if (ConnectorManager.getSelectedRepository() != null) {
+		if (ConnectorManager.isConnected()) {
 			String name = ConnectorManager.getSelectedRepository().getName();
 			QueryResultRow qr = new QueryResultRow();
 			qr.getValues().add(name);

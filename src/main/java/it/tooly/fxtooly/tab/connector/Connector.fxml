@@ -10,7 +10,7 @@
 	<center>
 	  <AnchorPane id="Content" maxHeight="180.0" maxWidth="200.0" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 	    <TextField fx:id="username" layoutX="0.0" layoutY="65.0" prefWidth="200.0" />
-	    <PasswordField fx:id="password" layoutX="0.0" layoutY="100.0" prefWidth="200.0" />
+	    <PasswordField onAction="#connect" fx:id="password" layoutX="0.0" layoutY="100.0" prefWidth="200.0" />
 	    <ComboBox fx:id="repositories" layoutX="0.0" layoutY="23.0" />
 	    <Label layoutX="0.0" layoutY="7.0" text="Repositories:" />
 	    <Label layoutX="1.0" layoutY="51.0" text="Username:" />

@@ -23,16 +23,16 @@
 	            <TextArea fx:id="query" prefHeight="158.0" prefWidth="552.0" style="-fx-font: 15 System;" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 	          </children>
 	        </AnchorPane>
-	        <AnchorPane maxWidth="280.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="280.0">
+	        <AnchorPane maxWidth="240.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="240.0">
 	          <children>
-	            <BorderPane prefHeight="113.0" prefWidth="238.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+	            <BorderPane prefHeight="113.0" prefWidth="218.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 	              <center>
 					<AnchorPane>
 						<children>
-							  <TextField fx:id="queryName" layoutX="4.0" layoutY="4.0" prefWidth="142.0" />
+							  <TextField fx:id="queryName" layoutY="4.0" prefWidth="142.0" />
 					                <Button fx:id="saveQuery" layoutX="150.0" layoutY="5.0" mnemonicParsing="false" onAction="#saveQuery" prefWidth="88.0" text="Save Query" />
-					                <ComboBox fx:id="types" layoutX="4.0" layoutY="32.0" onAction="#selectType" prefWidth="142.0" />
-					                <Button layoutX="4.0" layoutY="57.0" mnemonicParsing="false" onAction="#switchUpdateSelect" prefWidth="142.0" text="Switch update/select" />
+					                <ComboBox fx:id="types" layoutY="32.0" onAction="#selectType" prefWidth="142.0" />
+					                <Button layoutY="57.0" mnemonicParsing="false" onAction="#switchUpdateSelect" prefWidth="142.0" text="Switch update/select" />
 						</children>
 					</AnchorPane>
 	              </center>
