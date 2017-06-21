@@ -12,6 +12,7 @@ import it.tooly.fxtooly.documentum.DctmUtilsFX;
 import it.tooly.fxtooly.tab.queryexecutor.control.QueryResultRowContextMenu;
 import it.tooly.fxtooly.tab.queryexecutor.model.QueryResult;
 import it.tooly.fxtooly.tab.queryexecutor.model.QueryResultRow;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -22,19 +23,19 @@ public class QueryResultTable extends TableView<QueryResultRow> {
 	public void setQueryResult(QueryResult queryResult) {
 		getColumns().clear();
 		getItems().clear();
-		for (int i = 0; i < queryResult.getColumnNames().size(); i++) {
-			String cn = queryResult.getColumnNames().get(i);
-			if ("format".equals(cn)) {
+		for (String columnName : queryResult.getColumnNames()) {
+			if ("format".equals(columnName)) {
 				TableColumn<QueryResultRow, ImageView> col = new TableColumn<>();
 				col.setCellValueFactory(new PropertyValueFactory<>("format"));
 				getColumns().add(col);
-			} else if ("r_lock_owner".equals(cn)) {
+			} else if ("r_lock_owner".equals(columnName)) {
 				TableColumn<QueryResultRow, Label> col = new TableColumn<>();
 				col.setCellValueFactory(new PropertyValueFactory<>("lockOwner"));
 				getColumns().add(col);
 			} else {
-				TableColumn<QueryResultRow, String> col = new TableColumn<>(cn);
-				col.setCellValueFactory(new PropertyValueFactory<>("nextValue"));
+				TableColumn<QueryResultRow, String> col = new TableColumn<>(columnName);
+				col.setCellValueFactory(
+						cellData -> new SimpleStringProperty(cellData.getValue().getAttrValue(columnName).toString()));
 				getColumns().add(col);
 			}
 		}

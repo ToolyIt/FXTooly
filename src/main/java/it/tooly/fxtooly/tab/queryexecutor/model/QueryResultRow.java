@@ -77,11 +77,7 @@ public class QueryResultRow extends DctmObject implements IModelObject {
 
 	public Label getLockOwner() {
 		Label lbl = new Label();
-		String string = getAttrValueAt(counter).toString();
-		counter++;
-		if (counter == attributeValues.size()) {
-			counter = 0;
-		}
+		String string = getAttrValue("r_lock_owner").toString();
 		if (!StringUtils.isEmpty(string)) {
 			ImageView typeIcon = ToolyUtils.getImage(ToolyUtils.IMAGE_LOCK);
 			Tooltip tt = new Tooltip(string);
