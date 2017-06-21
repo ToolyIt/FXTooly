@@ -42,6 +42,7 @@ public class ConnectorController implements ToolyPaneController{
 		IRepository repository = repositories.getSelectionModel().getSelectedItem();
 		IUserAccount userAccount = new UserAccount(username.getText(), password.getText());
 		ConnectorManager.connect(repository, userAccount);
+		FXTooly.setTitle("Connected to " + repository.getName() + " as " + userAccount.getLoginName());
 		FXTooly.reInit();
 	}
 

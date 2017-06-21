@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 public class FXTooly extends Application {
 	private static String userId = UUID.randomUUID().toString();
 	private static TextField status = null;
+	private static Stage primaryStage = null;
 	private static Parent root = null;
 	private static List<ToolyPane> toolyPanes = new LinkedList<ToolyPane>();
 	private static boolean hasFocus = true;
@@ -50,10 +51,13 @@ public class FXTooly extends Application {
 
 		FXTooly.launch(args);
 	}
-
+	public static void setTitle(String title){
+		primaryStage.setTitle("FXTooly" + (title != null ? " - " + title : ""));
+	}
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("FXTooly");
+		FXTooly.primaryStage = primaryStage;
+		setTitle(null);
 		root = FXMLLoader.load(getClass().getResource("Main.fxml"));
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
@@ -67,6 +71,7 @@ public class FXTooly extends Application {
 					IUserAccount userAccount = new UserAccount(raw.get(1), raw.get(2));
 					ConnectorManager.connect(repository, userAccount);
 					FXTooly.setStatus("Connected to " + repository.getName() + " as " + userAccount.getLoginName());
+					setTitle("Connected to " + repository.getName() + " as " + userAccount.getLoginName());
 					FXTooly.reInit();
 				} catch (DfException e) {
 					ToolyExceptionHandler.handle(e);

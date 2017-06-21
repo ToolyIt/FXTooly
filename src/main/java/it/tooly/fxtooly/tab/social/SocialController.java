@@ -63,11 +63,12 @@ public class SocialController implements ToolyPaneController{
 		Runnable task = () -> {
 			while (true) {
 				try {
-					if (ConnectorManager.isConnected()) {
-						Platform.runLater(() -> display(DctmUtilsFX.getObject(
-								ConnectorManager.getSession(), CHANNEL_MESSAGES, Channel.class, activeChannel.getVstamp())));
-						Thread.sleep(3000);
+					if (ConnectorManager.isConnected() && activeChannel != null) {
+						Channel channel = DctmUtilsFX.getObject(
+								ConnectorManager.getSession(), CHANNEL_MESSAGES, Channel.class, activeChannel.getVstamp());
+						Platform.runLater(() -> display(channel));
 					}
+					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 					break;
 				}

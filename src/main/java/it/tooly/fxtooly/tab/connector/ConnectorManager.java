@@ -68,6 +68,7 @@ public class ConnectorManager {
 
 	public static void connect(IRepository repository, IUserAccount userAccount) {
 		try {
+			disconnect();
 			DctmClient.getInstance().getSession(repository, userAccount);
 			connectedRepos.add(repository);
 			selectedRepo = repository;
@@ -98,7 +99,7 @@ public class ConnectorManager {
 	}
 
 	public static boolean isConnected() {
-		return !connectedRepos.isEmpty();
+		return !connectedRepos.isEmpty() && getSession() != null;
 	}
 
 	public static boolean isConnected(IRepository repository) {

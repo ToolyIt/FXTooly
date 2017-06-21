@@ -24,7 +24,7 @@ public class RepositoryBrowserController implements ToolyPaneController{
 
 	@FXML
 	public void initialize() {
-		if (ConnectorManager.getSelectedRepository() != null) {
+		if (ConnectorManager.isConnected()) {
 			String name = ConnectorManager.getSelectedRepository().getName();
 			QueryResultRow qr = new QueryResultRow(name);
 			TreeItem<QueryResultRow> rootItem = new TreeItem<>(qr, ToolyUtils.getImage(ToolyUtils.IMAGE_HOME));
