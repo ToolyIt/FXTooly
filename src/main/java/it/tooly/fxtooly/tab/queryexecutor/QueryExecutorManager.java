@@ -22,17 +22,16 @@ public class QueryExecutorManager {
 		q.setDQL(query);
 		try {
 			col = q.execute(ConnectorManager.getSession(), IDfQuery.DF_EXECREAD_QUERY);
-			boolean fr = true;
+			boolean firstRow = true;
 			while (col.next()) {
-				QueryResultRow row = new QueryResultRow();
-				qr.getRows().add(row);
 				for (int i = 0; i< col.getAttrCount(); i ++) {
-					if (fr){
+					if (firstRow) {
 						qr.getColumnNames().add(col.getAttr(i).getName());
 					}
-					row.getValues().add((col.getString(col.getAttr(i).getName())));
 				}
-				fr = false;
+				QueryResultRow row = new QueryResultRow(col.getTypedObject());
+				qr.add(row);
+				firstRow = false;
 			}
 		} finally {
 			DctmUtilsFX.closeCollection(col);

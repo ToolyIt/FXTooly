@@ -38,7 +38,8 @@ public class ToolySettings {
 		def.getList().add(new ToolySetting(S_TAB, "Default tab:", QueryExecutor.class.getSimpleName(), paneNames));
 		return def;
 	}
-	public static ToolySetting getLocalSetting(String name){
+
+	public static ToolySetting getLocalSetting(String name) {
 		ToolySettings object = ToolyUtils.getObject(SettingsController.LOCAL_SETTINGS, ToolySettings.class);
 		for (ToolySetting ts: object.getList()) {
 			if (ts.getName().equals(name)){

@@ -56,6 +56,7 @@ public class QueryExecutorController implements ToolyPaneController{
 	public void selectType(){
 		query.setText("select * from " + types.getSelectionModel().getSelectedItem().getValues().get(0));
 	}
+
 	public void switchUpdateSelect(){
 		if (query.getText().contains("select")) {
 			if (query.getText().contains("where")) {
@@ -111,7 +112,7 @@ public class QueryExecutorController implements ToolyPaneController{
 					"select name from dm_type order by name");
 			ObservableList<QueryResultRow> items = FXCollections.observableArrayList();
 			types.setItems(items);
-			items.addAll(qr.getRows());
+			items.addAll(qr);
 		}
 	}
 	public void execute() {
@@ -125,8 +126,8 @@ public class QueryExecutorController implements ToolyPaneController{
 			QueryResult queryResult;
 			try {
 				queryResult = queryExecutorManager.getQueryResult(query.getText());
-				FXTooly.setStatus(queryResult.getRows().size() + " results");
-				results.setQueryResult(queryResult);
+				FXTooly.setStatus(queryResult.size() + " results");
+				results.setObjects(queryResult);
 				Query query2 = new Query(null, query.getText());
 				if (queryExecutorManager.addQuery(LOCAL_QUERY_HISTORY, query2)) {
 					localQueries.add(query2);

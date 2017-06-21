@@ -58,9 +58,10 @@ public class MonitoringManager {
 				try {
 					QueryResult qr = DctmUtilsFX.executeQuery(ConnectorManager.getSession(), config.getQuery());
 
-					for (QueryResultRow qrr:  qr.getRows()) {
-						List<String> values = qrr.getValues();
-						addData(values.get(0), System.currentTimeMillis(), Long.parseLong(values.get(1)));
+					for (QueryResultRow qrr : qr) {
+						List<Object> values = qrr.getValues();
+						addData(values.get(0).toString(), System.currentTimeMillis(),
+								Long.parseLong(values.get(1).toString()));
 					}
 					Thread.sleep(config.getInterval() * 1000);
 				} catch (InterruptedException e) {

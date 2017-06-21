@@ -73,7 +73,8 @@ public class MainController {
 			tab.setText(newPane.getName());
 			tab.setClosable(true);
 			tab.setContent(newPane);
-			if (selectedTabSetting.getValue() != null &&
+			if (selectedTabSetting != null && selectedTabSetting.getValue() != null
+					&&
 					((String) selectedTabSetting.getValue()).equals(newPane.getName())) {
 				this.tabs.getSelectionModel().select(tab);
 			}

@@ -116,11 +116,11 @@ public class MonitoringController implements ToolyPaneController{
 	}
 	private boolean testQuery(String query){
 		QueryResult executeQuery = DctmUtilsFX.executeQuery(ConnectorManager.getSession(), query);
-		if (executeQuery.getRows().isEmpty()) {
+		if (executeQuery.isEmpty()) {
 			FXTooly.setStatus("Query does not have any results.");
 			return false;
 		}
-		QueryResultRow queryResultRow = executeQuery.getRows().get(0);
+		QueryResultRow queryResultRow = executeQuery.get(0);
 		if (queryResultRow.getValues().size() != 2) {
 			FXTooly.setStatus("Query result must have only 2 columns (series name and count).");
 			return false;

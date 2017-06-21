@@ -32,7 +32,7 @@ public class RepositoryBrowserManager {
 			IDfSysObject object = (IDfSysObject) ConnectorManager.getSession().getObject(new DfId(objectId));
 			for (int i = 0; i< object.getAttrCount(); i++){
 				String name = object.getAttr(i).getName();
-				qr.getRows().add(new QueryResultRow(name, object.getString(name)));
+				qr.add(new QueryResultRow(name, object.getString(name)));
 			}
 		} catch (DfException e) {
 			ToolyExceptionHandler.handle(e);
