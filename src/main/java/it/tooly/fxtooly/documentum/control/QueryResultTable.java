@@ -1,8 +1,7 @@
-package it.tooly.fxtooly.control;
+package it.tooly.fxtooly.documentum.control;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 
 import com.documentum.fc.client.IDfPersistentObject;
 import com.documentum.fc.client.IDfSysObject;
@@ -53,7 +52,7 @@ public class QueryResultTable extends TableView<QueryResultRow> {
 			}
 			if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
 				try {
-					IDfPersistentObject object = DctmUtilsFX.getObject(queryResult, selectedItem);
+					IDfPersistentObject object = DctmUtilsFX.getObject(selectedItem);
 					if (object != null) {
 						if (object instanceof IDfSysObject && ((IDfSysObject) object).getContentSize() > 0) {
 							Desktop.getDesktop().open(new File(((IDfSysObject) object).getFile(null)));
@@ -61,7 +60,7 @@ public class QueryResultTable extends TableView<QueryResultRow> {
 							DctmUtilsFX.showDump(object);
 						}
 					}
-				} catch (DfException | IOException ex) {
+				} catch (Exception ex) {
 					ToolyExceptionHandler.handle(ex);
 				}
 			}

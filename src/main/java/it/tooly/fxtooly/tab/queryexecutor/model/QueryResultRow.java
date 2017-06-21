@@ -56,7 +56,8 @@ public class QueryResultRow extends DctmObject implements IModelObject {
 	}
 
 	public String getNextValue() {
-		String[] attrNames = (String[]) attributeValues.keySet().toArray();
+		String[] attrNames = new String[attributeValues.size()];
+		attributeValues.keySet().toArray(attrNames);
 		String v = attributeValues.get(attrNames[counter]).toString();
 		counter++;
 		if (counter == attributeValues.size()) {

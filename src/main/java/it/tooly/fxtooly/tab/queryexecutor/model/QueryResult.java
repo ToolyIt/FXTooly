@@ -25,6 +25,10 @@ public class QueryResult extends StrictModelList<QueryResultRow> implements IMod
 		return columnNames;
 	}
 
+	public boolean hasColumn(String columnName) {
+		return this.columnNames.contains(columnName);
+	}
+
 	public void setColumnNames(List<String> columnNames) {
 		this.columnNames = columnNames;
 	}
